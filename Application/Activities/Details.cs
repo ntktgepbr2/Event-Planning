@@ -11,7 +11,8 @@ namespace Application.Activities
 {
     public class Details
     {
-        public class Query : IRequest<Activity>{
+        public class Query : IRequest<Activity>
+        {
 
             public Guid Id { get; set; }
         }
@@ -27,7 +28,7 @@ namespace Application.Activities
 
             public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Activities.FirstAsync(a => a.Id == request.Id);
+                return await _context.Activities.FindAsync(request.Id);
             }
         }
     }
