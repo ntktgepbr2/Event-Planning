@@ -30,6 +30,20 @@
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
+        },
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/client-app/src"
+        },
+        {
+            "name": "Attach to Chrome",
+            "port": 3000,
+            "request": "attach",
+            "type": "chrome",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
