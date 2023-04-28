@@ -3,7 +3,7 @@ import { Container } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { observer } from "mobx-react-lite";
-import { Route, Router, useLocation } from "react-router-dom";
+import { Route, useLocation } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import ActivityForm from "../../features/activities/forms/ActivityForm";
 import ActivityDetails from "../../features/activities/details/ActivityDetails";
