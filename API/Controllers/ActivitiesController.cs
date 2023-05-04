@@ -1,6 +1,7 @@
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Application.Activities;
+using Microsoft.AspNetCore.Authorization;
 using static Application.Activities.Create;
 
 namespace API.Controllers
@@ -16,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetActivities(Guid id, CancellationToken ct)
+        public async Task<IActionResult> GetActivity(Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new Details.Query() { Id = id }, ct);
 
