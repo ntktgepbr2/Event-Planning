@@ -3,16 +3,17 @@ import App from "./app/layout/App";
 import reportWebVitals from "./reportWebVitals";
 import "./app/layout/style.css";
 import "react-calendar/dist/Calendar.css";
-
+import { createBrowserHistory } from "history";
 import { StoreContext, store } from "./app/stores/store";
-import { BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+export const history = createBrowserHistory();
 root.render(
   <StoreContext.Provider value={store}>
-    <BrowserRouter>
+    <Router history={history}>
       <App />
-    </BrowserRouter>
+    </Router>
   </StoreContext.Provider>
 );
 

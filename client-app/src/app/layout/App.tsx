@@ -7,9 +7,25 @@ import { Route, useLocation } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import ActivityForm from "../../features/activities/forms/ActivityForm";
 import ActivityDetails from "../../features/activities/details/ActivityDetails";
+import LoginForm from "../../features/users/LoginForm";
+import { useStore } from "../stores/store";
+import { useEffect } from "react";
+import LoadingComponents from "./LoadingComponents";
+import RegisterForm from "../../features/users/RegisterForm";
 
 function App() {
   const location = useLocation();
+  const { commonStore, userStore } = useStore();
+
+  useEffect(() => {
+    if (commonStore.token) {
+      userStore.getUser().finally(() => commonStore.setAppLoaded());
+    } else {
+      commonStore.setAppLoaded();
+    }
+  }, [commonStore, userStore]);
+
+  if (!commonStore.appLoaded) return <LoadingComponents />;
 
   return (
     <>
@@ -23,6 +39,8 @@ function App() {
           component={ActivityForm}
           key={location.pathname}
         />
+        <Route exact path='/login' component={LoginForm} />
+        <Route exact path='/register' component={RegisterForm} />
       </Container>
     </>
   );

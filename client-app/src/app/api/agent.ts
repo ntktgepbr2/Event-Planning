@@ -1,7 +1,15 @@
 import axios, { AxiosResponse } from "axios";
 import { Activity } from "../models/activity";
+import { User, UserFormValues } from "../models/user";
+import { store } from "../stores/store";
 
 axios.defaults.baseURL = "https://localhost:5001/api";
+axios.interceptors.request.use((config) => {
+  const token = store.commonStore.token;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+
+  return config;
+});
 axios.interceptors.response.use(async (response) => {
   try {
     await sleep(1000);
@@ -35,8 +43,15 @@ const activities = {
   delete: (id: string) => requests.delete<void>(`/activities/${id}`),
 };
 
+const account = {
+  current: () => requests.get<User>("/account"),
+  login: (user: UserFormValues) => requests.post<User>("/account/login", user),
+  register: (user: UserFormValues) => requests.post<User>("/account/register", user),
+};
+
 const agent = {
   activities,
+  account,
 };
 
 export default agent;

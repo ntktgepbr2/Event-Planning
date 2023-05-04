@@ -6,6 +6,7 @@ using static Application.Activities.Create;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
