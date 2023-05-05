@@ -49,6 +49,9 @@ const account = {
   current: () => requests.get<User>("/account"),
   login: (user: UserFormValues) => requests.post<User>("/account/login", user),
   register: (user: UserFormValues) => requests.post<User>("/account/register", user),
+  verifyEmail: (token: string, email: string) =>
+    requests.post<void>(`/account/verifyEmail?token=${token}&email=${email}`, {}),
+  resendLink: (email: string) => requests.get(`/account/resendLink?&email=${email}`),
 };
 
 const agent = {

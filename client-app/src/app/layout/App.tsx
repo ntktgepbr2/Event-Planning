@@ -12,6 +12,8 @@ import { useStore } from "../stores/store";
 import { useEffect } from "react";
 import LoadingComponents from "./LoadingComponents";
 import RegisterForm from "../../features/users/RegisterForm";
+import RegisterSuccess from "../../features/users/RegisterSuccess";
+import ConfigrmEmail from "../../features/users/ConfirmEmail";
 
 function App() {
   const location = useLocation();
@@ -41,6 +43,8 @@ function App() {
         />
         <Route exact path='/login' component={LoginForm} />
         <Route exact path='/register' component={RegisterForm} />
+        <Route exact path='/account/registerSuccess' component={RegisterSuccess} />
+        <Route exact path='/account/verifyEmail' component={ConfigrmEmail} />
       </Container>
     </>
   );
