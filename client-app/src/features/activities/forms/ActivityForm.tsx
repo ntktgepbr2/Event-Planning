@@ -5,28 +5,21 @@ import { observer } from "mobx-react-lite";
 import { Link, useHistory, useParams } from "react-router-dom";
 import LoadingComponents from "../../../app/layout/LoadingComponents";
 import { v4 as uuid } from "uuid";
+import { ActivityFormValues } from "../../../app/models/activity";
 
 export default observer(function ActivityForm() {
   const { activityStore } = useStore();
   const { createActivity, updateActivity, loading, loadActivity, loadingInitial } = activityStore;
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
-  const [activity, setActivity] = useState({
-    id: "",
-    title: "",
-    description: "",
-    category: "",
-    date: "",
-    city: "",
-    venue: "",
-  });
+  const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
   useEffect(() => {
-    if (id) loadActivity(id).then((activity) => setActivity(activity!));
+    if (id) loadActivity(id).then((activity) => setActivity(new ActivityFormValues(activity)));
   }, [id, loadActivity]);
 
   function handleSubmit() {
-    if (activity.id.length === 0) {
+    if (!activity.id) {
       let newActivity = {
         ...activity,
         id: uuid(),
