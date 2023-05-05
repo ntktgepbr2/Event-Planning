@@ -6,7 +6,6 @@ using static Application.Activities.Create;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
@@ -30,7 +29,7 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Command() { Activity = activity }, ct));
         }
-
+        [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditActivity(Guid id, Activity activity, CancellationToken ct)
         {
@@ -43,6 +42,12 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteActivity(Guid id, CancellationToken ct)
         {
             return HandleResult(await Mediator.Send(new Delete.Command() { Id = id }, ct));
+        }
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id, CancellationToken ct)
+        {
+            return HandleResult(await Mediator.Send(new UpdateAttendance.Command { Id = id }, ct));
         }
     }
 }
