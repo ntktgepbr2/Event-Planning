@@ -50,7 +50,6 @@ namespace Persistence
                         Description = "Activity 2 months ago",
                         Category = "drinks",
                         City = "London",
-                        Venue = "Pub",
                         Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
@@ -67,7 +66,6 @@ namespace Persistence
                         Description = "Activity 1 month ago",
                         Category = "culture",
                         City = "Paris",
-                        Venue = "The Louvre",
                         Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
@@ -89,8 +87,7 @@ namespace Persistence
                         Description = "Activity 1 month in future",
                         Category = "music",
                         City = "London",
-                        Venue = "Wembly Stadium",
-                        Attendees = new List<ActivityAttendee>
+                     Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
                             {
@@ -111,8 +108,7 @@ namespace Persistence
                         Description = "Activity 2 months in future",
                         Category = "food",
                         City = "London",
-                        Venue = "Jamies Italian",
-                        Attendees = new List<ActivityAttendee>
+                             Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
                             {
@@ -133,7 +129,7 @@ namespace Persistence
                         Description = "Activity 3 months in future",
                         Category = "drinks",
                         City = "London",
-                        Venue = "Pub",
+        
                         Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
@@ -155,7 +151,7 @@ namespace Persistence
                         Description = "Activity 4 months in future",
                         Category = "culture",
                         City = "London",
-                        Venue = "British Museum",
+                    
                         Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
@@ -172,7 +168,7 @@ namespace Persistence
                         Description = "Activity 5 months in future",
                         Category = "drinks",
                         City = "London",
-                        Venue = "Punch and Judy",
+                 
                         Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
@@ -194,7 +190,7 @@ namespace Persistence
                         Description = "Activity 6 months in future",
                         Category = "music",
                         City = "London",
-                        Venue = "O2 Arena",
+                 
                         Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
@@ -216,7 +212,7 @@ namespace Persistence
                         Description = "Activity 7 months in future",
                         Category = "travel",
                         City = "Berlin",
-                        Venue = "All",
+                  
                         Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee
@@ -238,7 +234,7 @@ namespace Persistence
                         Description = "Activity 8 months in future",
                         Category = "drinks",
                         City = "London",
-                        Venue = "Pub",
+                  
                         Attendees = new List<ActivityAttendee>
                         {
                             new ActivityAttendee

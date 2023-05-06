@@ -1,15 +1,15 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Button, Header, Item, Segment, Image, Label } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
+import { Event } from "../../../app/models/event";
 import { Link } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 
-const activityImageStyle = {
+const eventImageStyle = {
   filter: "brightness(30%)",
 };
 
-const activityImageTextStyle = {
+const eventImageTextStyle = {
   position: "absolute",
   bottom: "5%",
   left: "5%",
@@ -19,18 +19,18 @@ const activityImageTextStyle = {
 };
 
 interface Props {
-  activity: Activity;
+  event: Event;
 }
 
-export default observer(function ActivityDetailedHeader({ activity }: Props) {
+export default observer(function EventDetailedHeader({ event }: Props) {
   const {
-    activityStore: { updateAttendance, loading, cancelActivityToggle },
+    eventStore: { updateAttendance, loading, cancelEventToggle, isMaximumAttendanceReached },
   } = useStore();
 
   return (
     <Segment.Group>
       <Segment basic attached='top' style={{ padding: "0" }}>
-        {activity.isCanceled && (
+        {event.isCanceled && (
           <Label
             color='red'
             content='Canceled'
@@ -38,19 +38,15 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
             style={{ position: "absolute", zIndex: 1000, left: -14, top: 20 }}
           ></Label>
         )}
-        <Image
-          src={`/assets/categoryImages/${activity.category}.jpg`}
-          fluid
-          style={activityImageStyle}
-        />
-        <Segment style={activityImageTextStyle} basic>
+        <Image src={`/assets/categoryImages/music.jpg`} fluid style={eventImageStyle} />
+        <Segment style={eventImageTextStyle} basic>
           <Item.Group>
             <Item>
               <Item.Content>
-                <Header size='huge' content={activity.title} style={{ color: "white" }} />
-                <p>{activity.date}</p>
+                <Header size='huge' content={event.title} style={{ color: "white" }} />
+                <p>{event.date}</p>
                 <p>
-                  Hosted by <strong>{activity.host?.displayName}</strong>
+                  Hosted by <strong>{event.host?.displayName}</strong>
                 </p>
               </Item.Content>
             </Item>
@@ -58,39 +54,47 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
         </Segment>
       </Segment>
       <Segment clearing attached='bottom'>
-        {activity.isHost ? (
+        {event.isHost ? (
           <>
             <Button
-              color={activity.isCanceled ? "green" : "red"}
+              color={event.isCanceled ? "green" : "red"}
               floated='left'
               basic
-              content={activity.isCanceled ? "Undo cancel" : "Cancel event"}
-              onClick={cancelActivityToggle}
+              content={event.isCanceled ? "Undo cancel" : "Cancel event"}
+              onClick={cancelEventToggle}
               loading={loading}
             />
             <Button
-              disabled={activity.isCanceled}
+              disabled={event.isCanceled}
               as={Link}
-              to={`/manage/${activity.id}`}
+              to={`/manage/${event.id}`}
               color='orange'
               floated='right'
             >
               Manage Event
             </Button>
           </>
-        ) : activity.isGoing ? (
-          <Button loading={loading} onClick={updateAttendance}>
+        ) : event.isGoing ? (
+          <Button loading={loading} onClick={()=>{updateAttendance(true)}}>
             Cancel attendance
           </Button>
         ) : (
           <Button
-            disabled={activity.isCanceled}
+            disabled={event.isCanceled || event.isMaximumAttendensReached}
             loading={loading}
-            onClick={updateAttendance}
+            onClick={()=>{updateAttendance()}}
             color='teal'
           >
-            Join Activity
+            Join Event
           </Button>
+        )}
+        {event.isMaximumAttendensReached && (
+          <Label
+            color='red'
+            content='Maxim attendees reached'
+            ribbon
+            style={{ position: "absolute", zIndex: 1000, left: -14, top: 20 }}
+          ></Label>
         )}
       </Segment>
     </Segment.Group>

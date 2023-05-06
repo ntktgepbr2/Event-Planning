@@ -3,13 +3,13 @@ import { Segment, List, Label, Item, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Profile } from "../../../app/models/profile";
-import { Activity } from "../../../app/models/activity";
+import { Event } from "../../../app/models/event";
 
 interface Props {
-  activity: Activity;
+  event: Event;
 }
 
-export default observer(function ActivityDetailedSidebar({ activity: { attendees, host } }: Props) {
+export default observer(function EventDetailedSidebar({ event: { attendees, host } }: Props) {
   if (!attendees) return null;
 
   return (

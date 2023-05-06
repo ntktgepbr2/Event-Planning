@@ -1,12 +1,9 @@
 import "./style.css";
 import { Container } from "semantic-ui-react";
 import NavBar from "./NavBar";
-import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { observer } from "mobx-react-lite";
 import { Route, useLocation } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
-import ActivityForm from "../../features/activities/forms/ActivityForm";
-import ActivityDetails from "../../features/activities/details/ActivityDetails";
 import LoginForm from "../../features/users/LoginForm";
 import { useStore } from "../stores/store";
 import { useEffect } from "react";
@@ -14,6 +11,9 @@ import LoadingComponents from "./LoadingComponents";
 import RegisterForm from "../../features/users/RegisterForm";
 import RegisterSuccess from "../../features/users/RegisterSuccess";
 import ConfigrmEmail from "../../features/users/ConfirmEmail";
+import EventDashboard from "../../features/activities/dashboard/EventDashboard";
+import EventDetails from "../../features/activities/details/EventDetails";
+import EventForm from "../../features/activities/forms/EventForm";
 
 function App() {
   const location = useLocation();
@@ -34,11 +34,11 @@ function App() {
       <NavBar />
       <Container style={{ marginTop: "7em" }}>
         <Route exact path='/' component={HomePage} />
-        <Route exact path='/activities' component={ActivityDashboard} />
-        <Route path='/activities/:id' component={ActivityDetails} />
+        <Route exact path='/events' component={EventDashboard} />
+        <Route path='/events/:id' component={EventDetails} />
         <Route
-          path={["/createActivity", "/manage/:id"]}
-          component={ActivityForm}
+          path={["/createEvent", "/manage/:id"]}
+          component={EventForm}
           key={location.pathname}
         />
         <Route exact path='/login' component={LoginForm} />

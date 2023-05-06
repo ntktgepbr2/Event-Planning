@@ -1,16 +1,16 @@
-import ActivityStore from "./activityStore";
+import EventStore from "./eventStore";
 import { createContext, useContext } from "react";
 import UserStore from "./userStore";
 import CommonStore from "./commonStore";
 
 interface Store {
-  activityStore: ActivityStore;
+  eventStore: EventStore;
   userStore: UserStore;
   commonStore: CommonStore;
 }
 
 export const store: Store = {
-  activityStore: new ActivityStore(),
+  eventStore: new EventStore(),
   userStore: new UserStore(),
   commonStore: new CommonStore(),
 };

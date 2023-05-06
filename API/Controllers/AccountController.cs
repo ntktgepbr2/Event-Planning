@@ -102,7 +102,7 @@ public class AccountController : ControllerBase
 
     }
 
-    [HttpPost("resendLink")]
+    [HttpGet("resendLink")]
     public async Task<IActionResult> ResendConfirmationLink(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);

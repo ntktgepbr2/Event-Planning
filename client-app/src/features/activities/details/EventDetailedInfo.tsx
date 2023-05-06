@@ -1,13 +1,13 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Segment, Grid, Icon } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
+import { Event } from "../../../app/models/event";
 
 interface Props {
-  activity: Activity;
+  event: Event;
 }
 
-export default observer(function ActivityDetailedInfo({ activity }: Props) {
+export default observer(function EventDetailedInfo({ event }: Props) {
   return (
     <Segment.Group>
       <Segment attached='top'>
@@ -16,7 +16,7 @@ export default observer(function ActivityDetailedInfo({ activity }: Props) {
             <Icon size='large' color='teal' name='info' />
           </Grid.Column>
           <Grid.Column width={15}>
-            <p>{activity.description}</p>
+            <p>{event.description}</p>
           </Grid.Column>
         </Grid>
       </Segment>
@@ -26,7 +26,7 @@ export default observer(function ActivityDetailedInfo({ activity }: Props) {
             <Icon name='calendar' size='large' color='teal' />
           </Grid.Column>
           <Grid.Column width={15}>
-            <span>{activity.date}</span>
+            <span>{event.date}</span>
           </Grid.Column>
         </Grid>
       </Segment>
@@ -36,9 +36,17 @@ export default observer(function ActivityDetailedInfo({ activity }: Props) {
             <Icon name='marker' size='large' color='teal' />
           </Grid.Column>
           <Grid.Column width={11}>
-            <span>
-              {activity.venue}, {activity.city}
-            </span>
+            <span>{event.city}</span>
+          </Grid.Column>
+        </Grid>
+      </Segment>
+      <Segment attached>
+        <Grid verticalAlign='middle'>
+          <Grid.Column width={1}>
+            <Icon name='users' size='large' color='teal' />
+          </Grid.Column>
+          <Grid.Column width={11}>
+            <span>Maximum attendees {event.maximumAttendees}</span>
           </Grid.Column>
         </Grid>
       </Segment>

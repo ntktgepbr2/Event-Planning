@@ -17,9 +17,9 @@ export default observer(function NavBar() {
         </Menu.Item>
         {IsLoggedIn && (
           <>
-            <Menu.Item as={NavLink} to='/activities' name='Activities' />
+            <Menu.Item as={NavLink} to='/events' name='Events' />
             <Menu.Item>
-              <Button as={NavLink} to='/createActivity' positive content='Create Activity' />
+              <Button as={NavLink} to='/createEvent' positive content='Create Event' />
             </Menu.Item>
             <Menu.Item position='right'>
               <Image src={user?.image || "/assets/user.png"} avatar spaced='right'></Image>

@@ -14,7 +14,7 @@ export default function HomePage() {
         {userStore.IsLoggedIn ? (
           <>
             <Header as='h2' inverted content='Welcome to Reactivities' />
-            <Button as={Link} to='/activities' size='huge' inverted>
+            <Button as={Link} to='/events' size='huge' inverted>
               Go to events!
             </Button>
           </>

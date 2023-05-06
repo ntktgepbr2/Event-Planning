@@ -6,10 +6,10 @@ using static Application.Activities.Create;
 
 namespace API.Controllers
 {
-    public class ActivitiesController : BaseApiController
+    public class EventsController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetActivities(CancellationToken ct)
+        public async Task<IActionResult> GetEvents(CancellationToken ct)
         {
             var result = await Mediator.Send(new List.Query(), ct);
 
@@ -17,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetActivity(Guid id, CancellationToken ct)
+        public async Task<IActionResult> GetEvent(Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new Details.Query() { Id = id }, ct);
 
@@ -25,13 +25,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateActivity(Activity activity, CancellationToken ct)
+        public async Task<IActionResult> CreateEvent(Activity activity, CancellationToken ct)
         {
             return HandleResult(await Mediator.Send(new Command() { Activity = activity }, ct));
         }
         [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditActivity(Guid id, Activity activity, CancellationToken ct)
+        public async Task<IActionResult> EditEvent(Guid id, Activity activity, CancellationToken ct)
         {
             activity.Id = id;
 
@@ -39,7 +39,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActivity(Guid id, CancellationToken ct)
+        public async Task<IActionResult> DeleteEvent(Guid id, CancellationToken ct)
         {
             return HandleResult(await Mediator.Send(new Delete.Command() { Id = id }, ct));
         }

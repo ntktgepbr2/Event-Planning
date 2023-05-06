@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Activity, ActivityFormValues } from "../models/activity";
+import { Event, EventFormValues } from "../models/event";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 
@@ -35,14 +35,14 @@ const requests = {
   delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
-const activities = {
-  list: () => requests.get<Activity[]>("/activities"),
-  details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-  create: (activity: ActivityFormValues) => requests.post<void>(`/activities`, activity),
-  update: (activity: ActivityFormValues) =>
-    requests.put<void>(`/activities/${activity.id}`, activity),
-  delete: (id: string) => requests.delete<void>(`/activities/${id}`),
-  attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {}),
+const events = {
+  list: () => requests.get<Event[]>("/events"),
+  details: (id: string) => requests.get<Event>(`/events/${id}`),
+  create: (event: EventFormValues) => requests.post<void>(`/events`, event),
+  update: (event: EventFormValues) =>
+    requests.put<void>(`/events/${event.id}`, event),
+  delete: (id: string) => requests.delete<void>(`/events/${id}`),
+  attend: (id: string) => requests.post<void>(`/events/${id}/attend`, {}),
 };
 
 const account = {
@@ -55,7 +55,7 @@ const account = {
 };
 
 const agent = {
-  activities,
+  events,
   account,
 };
 
