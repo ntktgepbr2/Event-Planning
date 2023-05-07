@@ -6,30 +6,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_activities_to_user : Migration
+    public partial class Add_Events_to_user : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ActivityAttendees",
+                name: "EventAttendees",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    ActivityId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    EventId = table.Column<Guid>(type: "TEXT", nullable: false),
                     IsHost = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActivityAttendees", x => new { x.ActivityId, x.UserId });
+                    table.PrimaryKey("PK_EventAttendees", x => new { x.EventId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_ActivityAttendees_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activities",
+                        name: "FK_EventAttendees_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ActivityAttendees_AspNetUsers_UserId",
+                        name: "FK_EventAttendees_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -37,8 +37,8 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActivityAttendees_UserId",
-                table: "ActivityAttendees",
+                name: "IX_EventAttendees_UserId",
+                table: "EventAttendees",
                 column: "UserId");
         }
 
@@ -46,7 +46,7 @@ namespace Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ActivityAttendees");
+                name: "EventAttendees");
         }
     }
 }

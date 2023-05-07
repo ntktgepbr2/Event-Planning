@@ -1,8 +1,8 @@
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Application.Activities;
+using Application.Events;
 using Microsoft.AspNetCore.Authorization;
-using static Application.Activities.Create;
+using static Application.Events.Create;
 
 namespace API.Controllers
 {
@@ -25,17 +25,18 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(Activity activity, CancellationToken ct)
+        public async Task<IActionResult> CreateEvent(Event userEvent, CancellationToken ct)
         {
-            return HandleResult(await Mediator.Send(new Command() { Activity = activity }, ct));
+            return HandleResult(await Mediator.Send(new Command() { Event = userEvent }, ct));
         }
-        [Authorize(Policy = "IsActivityHost")]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditEvent(Guid id, Activity activity, CancellationToken ct)
-        {
-            activity.Id = id;
 
-            return HandleResult(await Mediator.Send(new Edit.Command() { Activity = activity }, ct));
+        [Authorize(Policy = "IsEventHost")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditEvent(Guid id, Event userEvent, CancellationToken ct)
+        {
+            userEvent.Id = id;
+
+            return HandleResult(await Mediator.Send(new Edit.Command() { Event = userEvent }, ct));
         }
 
         [HttpDelete("{id}")]

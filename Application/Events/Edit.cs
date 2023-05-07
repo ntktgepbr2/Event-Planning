@@ -4,13 +4,13 @@ using Domain;
 using MediatR;
 using Persistence;
 
-namespace Application.Activities
+namespace Application.Events
 {
     public class Edit
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Activity Activity { get; set; }
+            public Event Event { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -26,21 +26,21 @@ namespace Application.Activities
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(new object[] { request.Activity.Id }, cancellationToken: cancellationToken);
+                var userEvent = await _context.Events.FindAsync(new object[] { request.Event.Id }, cancellationToken: cancellationToken);
 
-                if (activity == null) return null;
+                if (userEvent == null) return null;
 
-                _mapper.Map(request.Activity, activity);
+                _mapper.Map(request.Event, userEvent);
 
-                foreach (var field in activity.Fields)
+                foreach (var field in userEvent.Fields)
                 {
-                    field.Activity = activity;
-                    field.ActivityId = activity.Id;
+                    field.Event = userEvent;
+                    field.EventId = userEvent.Id;
                 }
 
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-                return !result ? Result<Unit>.Failure("Failed to update activity.") : Result<Unit>.Success(Unit.Value);
+                return !result ? Result<Unit>.Failure("Failed to update Event.") : Result<Unit>.Success(Unit.Value);
             }
         }
     }

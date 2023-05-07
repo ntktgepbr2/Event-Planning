@@ -12,11 +12,11 @@ namespace Persistence.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Venue",
-                table: "Activities");
+                table: "Events");
 
             migrationBuilder.AddColumn<int>(
                 name: "MaximumAttendees",
-                table: "Activities",
+                table: "Events",
                 type: "INTEGER",
                 nullable: false,
                 defaultValue: 0);
@@ -27,11 +27,11 @@ namespace Persistence.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "MaximumAttendees",
-                table: "Activities");
+                table: "Events");
 
             migrationBuilder.AddColumn<string>(
                 name: "Venue",
-                table: "Activities",
+                table: "Events",
                 type: "TEXT",
                 nullable: true);
         }

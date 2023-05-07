@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Activities;
+namespace Application.Events;
 
 public class UpdateAttendance
 {
@@ -27,40 +27,40 @@ public class UpdateAttendance
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var activity = await _context.Activities
+            var userEvent = await _context.Events
                 .Include(a => a.Attendees).ThenInclude(u => u.User)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            if (activity == null) return null;
+            if (userEvent == null) return null;
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName(), cancellationToken);
 
             if(user == null) return null;
 
-            var hostUserName = activity.Attendees.FirstOrDefault(x => x.IsHost)?.User.UserName;
+            var hostUserName = userEvent.Attendees.FirstOrDefault(x => x.IsHost)?.User.UserName;
 
-            var attendance = activity.Attendees.FirstOrDefault(x => x.User.UserName == user.UserName);
+            var attendance = userEvent.Attendees.FirstOrDefault(x => x.User.UserName == user.UserName);
 
             if (attendance != null && hostUserName == user.UserName)
             {
-                activity.IsCanceled = !activity.IsCanceled;
+                userEvent.IsCanceled = !userEvent.IsCanceled;
             }
 
             if (attendance != null && hostUserName != user.UserName)
             {
-                activity.Attendees.Remove(attendance);
+                userEvent.Attendees.Remove(attendance);
             }
 
             if (attendance == null)
             {
-                attendance = new ActivityAttendee
+                attendance = new EventAttendee
                 {
                     User = user,
-                    Activity = activity,
+                    Event = userEvent,
                     IsHost = false
                 };
 
-                activity.Attendees.Add(attendance);
+                userEvent.Attendees.Add(attendance);
             }
 
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;

@@ -1,11 +1,11 @@
 ﻿using Domain;
 using FluentValidation;
 
-namespace Application.Activities;
+namespace Application.Events;
 
-public class ActivityValidator : AbstractValidator<Activity>
+public class EventValidator : AbstractValidator<Event>
 {
-    public ActivityValidator()
+    public EventValidator()
     {
         RuleFor(x => x.City).NotEmpty();
         RuleFor(x => x.Title).NotEmpty();

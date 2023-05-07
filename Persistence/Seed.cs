@@ -12,7 +12,7 @@ namespace Persistence
         public static async Task SeedData(DataContext context,
             UserManager<User> userManager)
         {
-            if (!userManager.Users.Any() && !context.Activities.Any())
+            if (!userManager.Users.Any() && !context.Events.Any())
             {
                 var users = new List<User>
                 {
@@ -41,208 +41,208 @@ namespace Persistence
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
 
-                var activities = new List<Activity>
+                var Events = new List<Event>
                 {
-                    new Activity
+                    new Event
                     {
-                        Title = "Past Activity 1",
+                        Title = "Past Event 1",
                         Date = DateTime.Now.AddMonths(-2),
-                        Description = "Activity 2 months ago",
+                        Description = "Event 2 months ago",
                         Category = "drinks",
                         City = "London",
-                        Attendees = new List<ActivityAttendee>
+                        Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[0],
                                 IsHost = true
                             }
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Past Activity 2",
+                        Title = "Past Event 2",
                         Date = DateTime.Now.AddMonths(-1),
-                        Description = "Activity 1 month ago",
+                        Description = "Event 1 month ago",
                         Category = "culture",
                         City = "Paris",
-                        Attendees = new List<ActivityAttendee>
+                        Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[0],
                                 IsHost = true
                             },
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[1],
                                 IsHost = false
                             },
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Future Activity 1",
+                        Title = "Future Event 1",
                         Date = DateTime.Now.AddMonths(1),
-                        Description = "Activity 1 month in future",
+                        Description = "Event 1 month in future",
                         Category = "music",
                         City = "London",
-                     Attendees = new List<ActivityAttendee>
+                     Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[2],
                                 IsHost = true
                             },
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[1],
                                 IsHost = false
                             },
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Future Activity 2",
+                        Title = "Future Event 2",
                         Date = DateTime.Now.AddMonths(2),
-                        Description = "Activity 2 months in future",
+                        Description = "Event 2 months in future",
                         Category = "food",
                         City = "London",
-                             Attendees = new List<ActivityAttendee>
+                             Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[0],
                                 IsHost = true
                             },
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[2],
                                 IsHost = false
                             },
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Future Activity 3",
+                        Title = "Future Event 3",
                         Date = DateTime.Now.AddMonths(3),
-                        Description = "Activity 3 months in future",
+                        Description = "Event 3 months in future",
                         Category = "drinks",
                         City = "London",
         
-                        Attendees = new List<ActivityAttendee>
+                        Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[1],
                                 IsHost = true
                             },
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[0],
                                 IsHost = false
                             },
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Future Activity 4",
+                        Title = "Future Event 4",
                         Date = DateTime.Now.AddMonths(4),
-                        Description = "Activity 4 months in future",
+                        Description = "Event 4 months in future",
                         Category = "culture",
                         City = "London",
                     
-                        Attendees = new List<ActivityAttendee>
+                        Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[1],
                                 IsHost = true
                             }
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Future Activity 5",
+                        Title = "Future Event 5",
                         Date = DateTime.Now.AddMonths(5),
-                        Description = "Activity 5 months in future",
+                        Description = "Event 5 months in future",
                         Category = "drinks",
                         City = "London",
                  
-                        Attendees = new List<ActivityAttendee>
+                        Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[0],
                                 IsHost = true
                             },
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[1],
                                 IsHost = false
                             },
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Future Activity 6",
+                        Title = "Future Event 6",
                         Date = DateTime.Now.AddMonths(6),
-                        Description = "Activity 6 months in future",
+                        Description = "Event 6 months in future",
                         Category = "music",
                         City = "London",
                  
-                        Attendees = new List<ActivityAttendee>
+                        Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[2],
                                 IsHost = true
                             },
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[1],
                                 IsHost = false
                             },
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Future Activity 7",
+                        Title = "Future Event 7",
                         Date = DateTime.Now.AddMonths(7),
-                        Description = "Activity 7 months in future",
+                        Description = "Event 7 months in future",
                         Category = "travel",
                         City = "Berlin",
                   
-                        Attendees = new List<ActivityAttendee>
+                        Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[0],
                                 IsHost = true
                             },
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[2],
                                 IsHost = false
                             },
                         }
                     },
-                    new Activity
+                    new Event
                     {
-                        Title = "Future Activity 8",
+                        Title = "Future Event 8",
                         Date = DateTime.Now.AddMonths(8),
-                        Description = "Activity 8 months in future",
+                        Description = "Event 8 months in future",
                         Category = "drinks",
                         City = "London",
                   
-                        Attendees = new List<ActivityAttendee>
+                        Attendees = new List<EventAttendee>
                         {
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[2],
                                 IsHost = true
                             },
-                            new ActivityAttendee
+                            new EventAttendee
                             {
                                 User = users[1],
                                 IsHost = false
@@ -251,7 +251,7 @@ namespace Persistence
                     }
                 };
 
-                await context.Activities.AddRangeAsync(activities);
+                await context.Events.AddRangeAsync(Events);
                 await context.SaveChangesAsync();
             }
         }

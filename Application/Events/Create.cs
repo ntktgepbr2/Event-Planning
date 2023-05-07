@@ -5,13 +5,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Activities
+namespace Application.Events
 {
     public class Create
     {
         public class Command : IRequest<Result<Unit>>
         {
-            public Activity Activity { get; set; }
+            public Event Event { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -30,20 +30,20 @@ namespace Application.Activities
                 var user = await _context.Users.FirstOrDefaultAsync(x =>
                     x.Email == _userAccessor.GetUserEmail(), cancellationToken: cancellationToken);
 
-                var attendee = new ActivityAttendee
+                var attendee = new EventAttendee
                 {
                     User = user,
-                    Activity = request.Activity,
+                    Event = request.Event,
                     IsHost = true
                 };
 
-                request.Activity.Attendees.Add(attendee);
+                request.Event.Attendees.Add(attendee);
 
-                _context.Add(request.Activity);
+                _context.Add(request.Event);
 
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-                return !result ? Result<Unit>.Failure("Failure to create an activity.") : Result<Unit>.Success(Unit.Value);
+                return !result ? Result<Unit>.Failure("Failure to create an Event.") : Result<Unit>.Success(Unit.Value);
             }
         }
     }

@@ -1,4 +1,4 @@
-using Application.Activities;
+using Application.Events;
 using AutoMapper;
 using Domain;
 
@@ -8,12 +8,12 @@ namespace Application.Mappers
     {
         public MappingProfiles()
         {
-            CreateMap<Activity, Activity>();
-            CreateMap<Activity, ActivityDto>()
+            CreateMap<Event, Event>();
+            CreateMap<Event, EventDto>()
                 .ForMember(d => d.HostUserName,
                     o => o.MapFrom(s => s.Attendees.FirstOrDefault(a => a.IsHost).User.UserName));
 
-            CreateMap<ActivityAttendee, Profiles.Profile>()
+            CreateMap<EventAttendee, Profiles.Profile>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.User.DisplayName))
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.User.UserName))
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.User.Bio));
@@ -23,8 +23,8 @@ namespace Application.Mappers
             CreateMap<Field, Field>()
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
                 .ForMember(d => d.Value, o => o.MapFrom(s => s.Value))
-                .ForMember(d => d.Activity, o => o.Ignore())
-                .ForMember(d => d.ActivityId, o => o.Ignore());
+                .ForMember(d => d.Event, o => o.Ignore())
+                .ForMember(d => d.EventId, o => o.Ignore());
         }
     }
 }

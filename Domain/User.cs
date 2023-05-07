@@ -13,5 +13,5 @@ public class User : IdentityUser
     public string Address { get; set; }
     public string Birthday { get; set; }
 
-    public ICollection<ActivityAttendee> Activities { get; set; }
+    public ICollection<EventAttendee> Events { get; set; }
 }

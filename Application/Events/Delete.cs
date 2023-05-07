@@ -2,7 +2,7 @@ using Application.Core;
 using MediatR;
 using Persistence;
 
-namespace Application.Activities
+namespace Application.Events
 {
     public class Delete
     {
@@ -22,15 +22,15 @@ namespace Application.Activities
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+                var userEvent = await _context.Events.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
 
-                //   if (activity == null) return null;
+                if (userEvent == null) return null;
 
-                _context.Activities.Remove(activity);
+                _context.Events.Remove(userEvent);
 
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-                return !result ? Result<Unit>.Failure("Failed to delete activity.") : Result<Unit>.Success(Unit.Value);
+                return !result ? Result<Unit>.Failure("Failed to delete Event.") : Result<Unit>.Success(Unit.Value);
             }
         }
     }

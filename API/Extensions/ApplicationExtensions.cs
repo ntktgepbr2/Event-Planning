@@ -1,4 +1,4 @@
-using Application.Activities;
+using Application.Events;
 using Application.Interfaces;
 using Application.Mappers;
 using Infrastructure.Email;

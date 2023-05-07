@@ -39,7 +39,7 @@ public static class IdentityServiceExtensions
             });
 
         services.AddAuthorization(opt =>
-            opt.AddPolicy("IsActivityHost", policy =>
+            opt.AddPolicy("IsEventHost", policy =>
             {
                 policy.Requirements.Add(new IsHostRequirement());
             }));

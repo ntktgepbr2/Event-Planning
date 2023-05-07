@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_Fields_To_Activity : Migration
+    public partial class Add_Fields_To_Event : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,23 +19,23 @@ namespace Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Value = table.Column<string>(type: "TEXT", nullable: true),
-                    ActivityId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    EventId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fields", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Fields_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activities",
+                        name: "FK_Fields_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fields_ActivityId",
+                name: "IX_Fields_EventId",
                 table: "Fields",
-                column: "ActivityId");
+                column: "EventId");
         }
 
         /// <inheritdoc />

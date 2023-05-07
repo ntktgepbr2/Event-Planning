@@ -1,9 +1,9 @@
 ﻿using Application.Profiles;
 using Domain;
 
-namespace Application.Activities;
+namespace Application.Events;
 
-public class ActivityDto
+public class EventDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; }

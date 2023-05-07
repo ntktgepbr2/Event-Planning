@@ -1,5 +1,5 @@
 using API.DTOs;
-using Application.Activities;
+using Application.Events;
 using API.Extensions;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -27,7 +27,7 @@ namespace API
                 opt.Filters.Add(new AuthorizeFilter(policy));
             });
             services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssemblyContaining<ActivityValidator>();
+            services.AddValidatorsFromAssemblyContaining<EventValidator>();
             services.AddValidatorsFromAssemblyContaining<RegisterDtoValidator>();
             services.AddApplicationServices(Configuration);
             services.AddIdentityService(Configuration);

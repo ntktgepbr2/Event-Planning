@@ -13,30 +13,30 @@ namespace Persistence
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<Activity> Activities { get; set; }
-        public DbSet<ActivityAttendee> ActivityAttendees { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventAttendee> EventAttendees { get; set; }
         public DbSet<Field> Fields { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<ActivityAttendee>(x => x.HasKey(aa => new {aa.ActivityId, aa.UserId}));
+            builder.Entity<EventAttendee>(x => x.HasKey(aa => new {aa.EventId, aa.UserId}));
 
-            builder.Entity<ActivityAttendee>()
+            builder.Entity<EventAttendee>()
                 .HasOne(u => u.User)
-                .WithMany(a => a.Activities)
+                .WithMany(a => a.Events)
                 .HasForeignKey(u => u.UserId);
 
-            builder.Entity<ActivityAttendee>()
-                .HasOne(u => u.Activity)
+            builder.Entity<EventAttendee>()
+                .HasOne(u => u.Event)
                 .WithMany(a => a.Attendees)
-                .HasForeignKey(u => u.ActivityId);
+                .HasForeignKey(u => u.EventId);
 
             builder.Entity<Field>()
-                .HasOne(a => a.Activity)
+                .HasOne(a => a.Event)
                 .WithMany(f => f.Fields)
-                .HasForeignKey(f => f.ActivityId);
+                .HasForeignKey(f => f.EventId);
         }
     }
 }

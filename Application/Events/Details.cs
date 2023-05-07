@@ -6,17 +6,17 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Activities
+namespace Application.Events
 {
     public class Details
     {
-        public class Query : IRequest<Result<ActivityDto>>
+        public class Query : IRequest<Result<EventDto>>
         {
 
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<ActivityDto>>
+        public class Handler : IRequestHandler<Query, Result<EventDto>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -27,15 +27,15 @@ namespace Application.Activities
                 _mapper = mapper;
             }
 
-            public async Task<Result<ActivityDto>> Handle(Query request, CancellationToken ctx)
+            public async Task<Result<EventDto>> Handle(Query request, CancellationToken ctx)
             {
-                var activity = await _context.Activities
+                var userEvent = await _context.Events
                     .AsNoTracking()
-                    .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<EventDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(x => x.Id == request.Id, ctx);
 
 
-                return Result<ActivityDto>.Success(activity);
+                return Result<EventDto>.Success(userEvent);
             }
         }
     }

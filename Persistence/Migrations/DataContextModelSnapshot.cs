@@ -17,7 +17,7 @@ namespace Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
-            modelBuilder.Entity("Domain.Activity", b =>
+            modelBuilder.Entity("Domain.Event", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,12 +46,12 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activities");
+                    b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Domain.ActivityAttendee", b =>
+            modelBuilder.Entity("Domain.EventAttendee", b =>
                 {
-                    b.Property<Guid>("ActivityId")
+                    b.Property<Guid>("EventId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
@@ -60,11 +60,11 @@ namespace Persistence.Migrations
                     b.Property<bool>("IsHost")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ActivityId", "UserId");
+                    b.HasKey("EventId", "UserId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ActivityAttendees");
+                    b.ToTable("EventAttendees");
                 });
 
             modelBuilder.Entity("Domain.Field", b =>
@@ -73,7 +73,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("ActivityId")
+                    b.Property<Guid>("EventId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -84,7 +84,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActivityId");
+                    b.HasIndex("EventId");
 
                     b.ToTable("Fields");
                 });
@@ -305,34 +305,34 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.ActivityAttendee", b =>
+            modelBuilder.Entity("Domain.EventAttendee", b =>
                 {
-                    b.HasOne("Domain.Activity", "Activity")
+                    b.HasOne("Domain.Event", "Event")
                         .WithMany("Attendees")
-                        .HasForeignKey("ActivityId")
+                        .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.User", "User")
-                        .WithMany("Activities")
+                        .WithMany("Events")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Activity");
+                    b.Navigation("Event");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Field", b =>
                 {
-                    b.HasOne("Domain.Activity", "Activity")
+                    b.HasOne("Domain.Event", "Event")
                         .WithMany("Fields")
-                        .HasForeignKey("ActivityId")
+                        .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Activity");
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -386,7 +386,7 @@ namespace Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Activity", b =>
+            modelBuilder.Entity("Domain.Event", b =>
                 {
                     b.Navigation("Attendees");
 
@@ -395,7 +395,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.User", b =>
                 {
-                    b.Navigation("Activities");
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../app/stores/store";
 import { useEffect } from "react";
 import { Container, Grid, Header, Segment } from "semantic-ui-react";
+import LoadingComponents from "../../app/layout/LoadingComponents";
 
 export default observer(function ProfilePage() {
   const {
@@ -60,7 +61,7 @@ export default observer(function ProfilePage() {
           </Grid>
         </Segment>
       ) : (
-        <p>Loading profile...</p>
+        <LoadingComponents content='Loading....' />
       )}
     </Container>
   );
