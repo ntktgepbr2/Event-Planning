@@ -13,7 +13,7 @@ export default observer(function NavBar() {
       <Container>
         <Menu.Item as={NavLink} exact to='/' header>
           <img src='/assets/logo.png' alt='logo' style={{ marginRight: "10px" }} />
-          Events
+          Event Planning
         </Menu.Item>
         {IsLoggedIn && (
           <>

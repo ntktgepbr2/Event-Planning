@@ -1,11 +1,12 @@
 import { Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
-import { Button, Header, Label, Segment } from "semantic-ui-react";
+import { useState } from "react";
+import { Button, Header, Segment } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import MyTextInput from "../../app/common/form/MyTextInput";
 import { ProfileFormValues } from "../../app/models/profile";
 import { useHistory } from "react-router-dom";
+import validateProfileForm from "./profileFormValidator";
 
 const ProfileForm = () => {
   const {
@@ -18,6 +19,7 @@ const ProfileForm = () => {
     <Segment clearing>
       <Header content='Edit Profile' sub color='teal' />
       <Formik
+        validate={validateProfileForm}
         initialValues={profileFormValues}
         onSubmit={(values: ProfileFormValues, { setSubmitting }) => {
           values.userName = profile?.userName;

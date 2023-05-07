@@ -1,9 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Button, Form, Grid, Segment } from "semantic-ui-react";
+import { Button, Form, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useHistory, useParams } from "react-router-dom";
-import LoadingComponents from "../../../app/layout/LoadingComponents";
 import { v4 as uuid } from "uuid";
 import { EventFormValues } from "../../../app/models/event";
 import { Field } from "../../../app/models/field";
@@ -40,13 +39,34 @@ export default observer(function EventForm() {
     setEvent((prevEvent) => ({ ...prevEvent, [name]: value }));
   }
 
+  const handleAdditionalInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    console.log(name, "   ", value);
+    const fieldIndex = parseInt(name);
+    const updatedFields = fields.map((field) => {
+      if (field.key === fieldIndex) {
+        return { ...field, value };
+      }
+      return field;
+    });
+    setFields(updatedFields);
+    console.log(fields);
+    setEvent((prevState) => {
+      const updatedFields = prevState.fields.map((field) => {
+        if (field.key === fieldIndex) {
+          return { ...field, value };
+        }
+        return field;
+      });
+      return { ...prevState, fields: updatedFields };
+    });
+  };
+
   const handleAddField = () => {
-    const newField = { key: "", value: "" };
+    const newField = { key: fields.length, value: "" };
     setFields([...fields, newField]);
     setEvent((prevState) => ({ ...prevState, fields: [...prevState.fields, newField] }));
   };
-
-  //if (loadingInitial) return <LoadingComponents content='Loading...' />;
 
   return (
     <Segment clearing>
@@ -94,14 +114,7 @@ export default observer(function EventForm() {
             placeholder={`Field ${index + 1}`}
             value={field.value}
             name={index}
-            onChange={(evt) => {
-              const { name, value } = evt.target;
-              console.log(name, value);
-              const updatedFields = [...fields];
-              console.log(updatedFields);
-              updatedFields[index] = { key: name, value: value };
-              setFields([...fields, ...updatedFields]);
-            }}
+            onChange={handleAdditionalInputChange}
           />
         ))}
         <Button type='button' onClick={handleAddField} content='Add Field' />

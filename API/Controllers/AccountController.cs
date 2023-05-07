@@ -41,7 +41,7 @@ public class AccountController : ControllerBase
 
         if (user == null) return Unauthorized("Invalid email");
 
-        if(user.UserName =="tom") user.EmailConfirmed = true;
+        if (user.UserName == "tom") user.EmailConfirmed = true;
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
@@ -76,15 +76,7 @@ public class AccountController : ControllerBase
 
         if (!result.Succeeded) return BadRequest("Problem registering user");
 
-        var origin = Request.Headers["origin"];
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-
-        var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
-        var message =
-            $"<p>Please follow link to verify your email:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
-
-        await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
+        await SendEmailAsync(user);
 
         return Ok("Registration success - please verify email!");
     }
@@ -113,15 +105,7 @@ public class AccountController : ControllerBase
 
         if (user == null) return Unauthorized();
 
-        var origin = Request.Headers["origin"];
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-
-        var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
-        var message =
-            $"<p>Please follow link to verify your email:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
-
-        await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
+        await SendEmailAsync(user);
 
         return Ok("Verification link resent");
 
@@ -131,8 +115,7 @@ public class AccountController : ControllerBase
     [HttpGet()]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
     {
-        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await GetUser();
 
         return CreateUserDto(user);
     }
@@ -141,8 +124,7 @@ public class AccountController : ControllerBase
     [HttpGet("profile")]
     public async Task<ActionResult<Profile>> GetCurrentUserProfile()
     {
-        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await GetUser();
 
         return _mapper.Map<Profile>(user);
     }
@@ -151,8 +133,7 @@ public class AccountController : ControllerBase
     [HttpPut("profile")]
     public async Task<ActionResult<Profile>> UpdateCurrentUserProfile(Profile profile)
     {
-        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await GetUser();
 
         _mapper.Map(profile, user);
 
@@ -170,5 +151,26 @@ public class AccountController : ControllerBase
             Token = _tokenService.CreateToken(user),
             UserName = user.UserName,
         };
+    }
+
+    private async Task<User> GetUser()
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        var user = await _userManager.FindByEmailAsync(email);
+        return user;
+    }
+
+
+    private async Task SendEmailAsync(User user)
+    {
+        var origin = Request.Headers["origin"];
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+        var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
+        var message =
+            $"<p>Please follow link to verify your email:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
+
+        await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
     }
 }

@@ -1,5 +1,5 @@
 export interface Field {
-  key: string;
+  key: number;
   value: string;
-  [key: string]: string;
+  [key: number]: string;
 }
