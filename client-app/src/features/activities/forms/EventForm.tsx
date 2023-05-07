@@ -17,7 +17,6 @@ export default observer(function EventForm() {
 
   useEffect(() => {
     if (id) loadEvent(id).then((event) => setEvent(new EventFormValues(event)));
-    // setFields(event.fields || []);
   }, [id, loadEvent, fields]);
 
   function handleSubmit() {
@@ -27,7 +26,6 @@ export default observer(function EventForm() {
         id: uuid(),
         fields: fields,
       };
-      console.log(newEvent);
       createEvent(newEvent).then(() => history.push(`/events/${newEvent.id}`));
     } else {
       updateEvent({ ...event, fields: fields }).then(() => history.push(`/events/${event.id}`));
@@ -42,7 +40,6 @@ export default observer(function EventForm() {
 
   const handleAdditionalInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    console.log(name, "   ", value);
     const fieldIndex = parseInt(name);
     const updatedFields = fields.map((field) => {
       if (field.id === fieldIndex) {
@@ -51,12 +48,12 @@ export default observer(function EventForm() {
       return field;
     });
     setFields(updatedFields);
-    console.log(fields);
     setEvent((prevState) => {
       const updatedFields = prevState.fields.map((field) => {
         if (field.id === fieldIndex) {
           return { ...field, value };
         }
+
         return field;
       });
       return { ...prevState, fields: updatedFields };
@@ -65,12 +62,14 @@ export default observer(function EventForm() {
 
   const handleAddField = () => {
     const newField = { id: fields.length, name: "", value: "" };
+
     setFields([...fields, newField]);
     setEvent((prevState) => ({ ...prevState, fields: [...prevState.fields, newField] }));
   };
 
   const handleRemoveField = () => {
     const updatedFields = [...fields];
+
     updatedFields.pop();
     setFields(updatedFields);
 
