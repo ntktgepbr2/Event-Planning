@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { Event, EventFormValues } from "../models/event";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
+import { Profile, ProfileFormValues } from "../models/profile";
 
 axios.defaults.baseURL = "https://localhost:5001/api";
 axios.interceptors.request.use((config) => {
@@ -39,8 +40,7 @@ const events = {
   list: () => requests.get<Event[]>("/events"),
   details: (id: string) => requests.get<Event>(`/events/${id}`),
   create: (event: EventFormValues) => requests.post<void>(`/events`, event),
-  update: (event: EventFormValues) =>
-    requests.put<void>(`/events/${event.id}`, event),
+  update: (event: EventFormValues) => requests.put<void>(`/events/${event.id}`, event),
   delete: (id: string) => requests.delete<void>(`/events/${id}`),
   attend: (id: string) => requests.post<void>(`/events/${id}/attend`, {}),
 };
@@ -54,9 +54,16 @@ const account = {
   resendLink: (email: string) => requests.get(`/account/resendLink?&email=${email}`),
 };
 
+const profiles = {
+  getCurrentProfile: () => requests.get<Profile>("/account/profile"),
+  updateCurrentProfile: (profile: ProfileFormValues) =>
+    requests.put<void>("/account/profile", profile),
+};
+
 const agent = {
   events,
   account,
+  profiles,
 };
 
 export default agent;

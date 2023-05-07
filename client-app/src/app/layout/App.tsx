@@ -14,6 +14,8 @@ import ConfigrmEmail from "../../features/users/ConfirmEmail";
 import EventDashboard from "../../features/activities/dashboard/EventDashboard";
 import EventDetails from "../../features/activities/details/EventDetails";
 import EventForm from "../../features/activities/forms/EventForm";
+import ProfilePage from "../../features/profiles/ProfilePage";
+import ProfileForm from "../../features/profiles/ProfileForm";
 
 function App() {
   const location = useLocation();
@@ -41,6 +43,8 @@ function App() {
           component={EventForm}
           key={location.pathname}
         />
+        <Route exact path='/profiles/:username' component={ProfilePage} />
+        <Route exact path='/updateProfile' component={ProfileForm} />
         <Route exact path='/login' component={LoginForm} />
         <Route exact path='/register' component={RegisterForm} />
         <Route exact path='/account/registerSuccess' component={RegisterSuccess} />

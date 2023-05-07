@@ -3,14 +3,20 @@ import { Button, Label } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import MyTextInput from "../../app/common/form/MyTextInput";
+import { useHistory } from "react-router-dom";
 
 export default observer(function LoginForm() {
   const { userStore } = useStore();
+  const history = useHistory();
+
   return (
     <Formik
       initialValues={{ email: "", password: "", error: null }}
       onSubmit={(values, { setErrors }) =>
-        userStore.login(values).catch((error) => setErrors({ error: error.response.data }))
+        userStore
+          .login(values)
+          .then(() => history.push("/updateProfile"))
+          .catch((error) => setErrors({ error: error.response.data }))
       }
     >
       {({ handleSubmit, isSubmitting, errors }) => (

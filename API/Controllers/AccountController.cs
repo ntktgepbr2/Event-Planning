@@ -2,6 +2,7 @@
 using System.Text;
 using API.DTOs;
 using API.Services;
+using AutoMapper;
 using Domain;
 using Infrastructure.Email;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Profile = Application.Profiles.Profile;
 
 namespace API.Controllers;
 
@@ -21,13 +23,15 @@ public class AccountController : ControllerBase
     private readonly SignInManager<User> _signInManager;
     private readonly TokenService _tokenService;
     private readonly EmailSender _emailSender;
+    private readonly IMapper _mapper;
 
-    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService, EmailSender emailSender)
+    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService, EmailSender emailSender, IMapper mapper)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
         _emailSender = emailSender;
+        _mapper = mapper;
     }
 
     [HttpPost("login")]
@@ -131,6 +135,30 @@ public class AccountController : ControllerBase
         var user = await _userManager.FindByEmailAsync(email);
 
         return CreateUserDto(user);
+    }
+
+    [Authorize]
+    [HttpGet("profile")]
+    public async Task<ActionResult<Profile>> GetCurrentUserProfile()
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        var user = await _userManager.FindByEmailAsync(email);
+
+        return _mapper.Map<Profile>(user);
+    }
+
+    [Authorize]
+    [HttpPut("profile")]
+    public async Task<ActionResult<Profile>> UpdateCurrentUserProfile(Profile profile)
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        var user = await _userManager.FindByEmailAsync(email);
+
+        _mapper.Map(profile, user);
+
+        await _userManager.UpdateAsync(user);
+
+        return Ok();
     }
 
     private UserDto CreateUserDto(User user)

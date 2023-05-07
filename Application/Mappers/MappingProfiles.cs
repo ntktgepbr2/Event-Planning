@@ -17,6 +17,8 @@ namespace Application.Mappers
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.User.DisplayName))
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.User.UserName))
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.User.Bio));
+
+            CreateMap<User, Profiles.Profile>().ReverseMap();
         }
     }
 }
