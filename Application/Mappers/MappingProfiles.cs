@@ -19,6 +19,12 @@ namespace Application.Mappers
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.User.Bio));
 
             CreateMap<User, Profiles.Profile>().ReverseMap();
+
+            CreateMap<Field, Field>()
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
+                .ForMember(d => d.Value, o => o.MapFrom(s => s.Value))
+                .ForMember(d => d.Activity, o => o.Ignore())
+                .ForMember(d => d.ActivityId, o => o.Ignore());
         }
     }
 }

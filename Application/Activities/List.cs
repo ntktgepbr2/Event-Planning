@@ -26,10 +26,9 @@ namespace Application.Activities
             public async Task<Result<List<ActivityDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activities = await _context.Activities
+                    .AsNoTracking()
                     .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
-
-                //var activitiesDto = _mapper.Map<List<ActivityDto>>(activities);
 
                 return Result<List<ActivityDto>>.Success(activities);
             }

@@ -17,7 +17,7 @@ export default observer(function EventForm() {
 
   useEffect(() => {
     if (id) loadEvent(id).then((event) => setEvent(new EventFormValues(event)));
-    setFields(event.fields || []);
+    // setFields(event.fields || []);
   }, [id, loadEvent, fields]);
 
   function handleSubmit() {
@@ -27,6 +27,7 @@ export default observer(function EventForm() {
         id: uuid(),
         fields: fields,
       };
+      console.log(newEvent);
       createEvent(newEvent).then(() => history.push(`/events/${newEvent.id}`));
     } else {
       updateEvent({ ...event, fields: fields }).then(() => history.push(`/events/${event.id}`));
@@ -44,7 +45,7 @@ export default observer(function EventForm() {
     console.log(name, "   ", value);
     const fieldIndex = parseInt(name);
     const updatedFields = fields.map((field) => {
-      if (field.key === fieldIndex) {
+      if (field.id === fieldIndex) {
         return { ...field, value };
       }
       return field;
@@ -53,7 +54,7 @@ export default observer(function EventForm() {
     console.log(fields);
     setEvent((prevState) => {
       const updatedFields = prevState.fields.map((field) => {
-        if (field.key === fieldIndex) {
+        if (field.id === fieldIndex) {
           return { ...field, value };
         }
         return field;
@@ -63,9 +64,21 @@ export default observer(function EventForm() {
   };
 
   const handleAddField = () => {
-    const newField = { key: fields.length, value: "" };
+    const newField = { id: fields.length, name: "", value: "" };
     setFields([...fields, newField]);
     setEvent((prevState) => ({ ...prevState, fields: [...prevState.fields, newField] }));
+  };
+
+  const handleRemoveField = () => {
+    const updatedFields = [...fields];
+    updatedFields.pop();
+    setFields(updatedFields);
+
+    setEvent((prevState) => {
+      const updatedFields = [...prevState.fields];
+      updatedFields.pop();
+      return { ...prevState, fields: updatedFields };
+    });
   };
 
   return (
@@ -109,15 +122,41 @@ export default observer(function EventForm() {
           onChange={handleInputChange}
         />
         {fields?.map((field: Field, index) => (
-          <Form.Input
-            key={index}
-            placeholder={`Field ${index + 1}`}
-            value={field.value}
-            name={index}
-            onChange={handleAdditionalInputChange}
-          />
+          <Form.Group key={index}>
+            <Form.Input
+              placeholder={`Field ${index + 1} Name`}
+              name={`${index}Name`}
+              onChange={(evt) => {
+                const value = evt.target.value;
+                const fieldIndex = parseInt(evt.target.name);
+                const updatedFields = fields.map((field) => {
+                  if (field.id === fieldIndex) {
+                    return { ...field, name: value };
+                  }
+                  return field;
+                });
+                setFields(updatedFields);
+                setEvent((prevState) => {
+                  const updatedFields = prevState.fields.map((field) => {
+                    if (field.id === fieldIndex) {
+                      return { ...field, name: value };
+                    }
+                    return field;
+                  });
+                  return { ...prevState, fields: updatedFields };
+                });
+              }}
+            />
+            <Form.Input
+              placeholder={`Field ${index + 1} Value`}
+              value={field.value}
+              name={`${index}`}
+              onChange={handleAdditionalInputChange}
+            />
+          </Form.Group>
         ))}
         <Button type='button' onClick={handleAddField} content='Add Field' />
+        <Button type='button' onClick={handleRemoveField} content='Remove Field' />
         <Button loading={loading} floated='right' positive type='submit' content='Submit' />
         <Button as={Link} to='/events' floated='right' type='button' content='Cancel' />
       </Form>

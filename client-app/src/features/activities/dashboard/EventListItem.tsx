@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
+import { Button, Icon, Item, ItemGroup, Label, Segment } from "semantic-ui-react";
 import { Event } from "../../../app/models/event";
 import { observer } from "mobx-react-lite";
 import EventListItemAtendee from "./EventListItemAtendee";
@@ -52,6 +52,20 @@ export default observer(function EventListItem({ event }: Props) {
           {event.date}
         </span>
       </Segment>
+      {event.fields &&
+        event.fields.map((field) => {
+          console.log(field);
+          return (
+            <>
+              <Segment key={field.id}>
+                <span>
+                  <Icon name='bookmark' />
+                  {field.name} : {field.value}
+                </span>
+              </Segment>
+            </>
+          );
+        })}
       <Segment secondary>
         <EventListItemAtendee attendees={event.attendees!} />
       </Segment>

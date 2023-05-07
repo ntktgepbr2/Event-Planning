@@ -32,6 +32,12 @@ namespace Application.Activities
 
                 _mapper.Map(request.Activity, activity);
 
+                foreach (var field in activity.Fields)
+                {
+                    field.Activity = activity;
+                    field.ActivityId = activity.Id;
+                }
+
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
                 return !result ? Result<Unit>.Failure("Failed to update activity.") : Result<Unit>.Success(Unit.Value);

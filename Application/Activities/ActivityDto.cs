@@ -15,4 +15,5 @@ public class ActivityDto
     public string HostUserName { get; set; }
     public bool IsCanceled { get; set; }
     public ICollection<Profile> Attendees { get; set; } = new List<Profile>();
+    public ICollection<Field> Fields { get; set; } = new List<Field>();
 }
