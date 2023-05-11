@@ -18,6 +18,7 @@ export default observer(function NavBar() {
         {IsLoggedIn && (
           <>
             <Menu.Item as={NavLink} to='/events' name='Events' />
+            <Menu.Item as={NavLink} to='/errors' name='Errors' />
             <Menu.Item>
               <Button as={NavLink} to='/createEvent' positive content='Create Event' />
             </Menu.Item>

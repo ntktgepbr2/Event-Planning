@@ -3,6 +3,7 @@ import { Button, Icon, Item, ItemGroup, Label, Segment } from "semantic-ui-react
 import { Event } from "../../../app/models/event";
 import { observer } from "mobx-react-lite";
 import EventListItemAtendee from "./EventListItemAtendee";
+import { format } from "date-fns";
 
 interface Props {
   event: Event;
@@ -49,7 +50,7 @@ export default observer(function EventListItem({ event }: Props) {
       <Segment>
         <span>
           <Icon name='clock' />
-          {event.date}
+          {format(event.date!, "dd MMM yyyy h:mm aa")}
         </span>
       </Segment>
       {event.fields &&

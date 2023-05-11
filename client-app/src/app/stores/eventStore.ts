@@ -3,26 +3,27 @@ import { Event, EventFormValues } from "../models/event";
 import agent from "../api/agent";
 import { store } from "./store";
 import { Profile } from "../models/profile";
+import { format } from "date-fns";
 
 export default class EventStore {
   events: Event[] = [];
   selectedEvent: Event | undefined = undefined;
   editMode = false;
   loading = false;
-  loadingInitial = true;
+  loadingInitial = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
   get eventsByDate() {
-    return this.events.slice().sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+    return this.events.slice().sort((a, b) => a.date!.getTime() - b.date!.getTime());
   }
 
   get groupedEvents() {
     return Object.entries(
       this.eventsByDate.reduce((events, event) => {
-        const date = event.date;
+        const date = format(event.date!, "dd MMM yyyy");
         events[date] = events[date] ? [...events[date], event] : [event];
         return events;
       }, {} as { [key: string]: Event[] })
@@ -72,7 +73,7 @@ export default class EventStore {
       event.isHost = event.hostUserName === user.userName;
       event.host = event.attendees?.find((x) => x.userName === event.hostUserName);
     }
-    event.date = event.date.split("T")[0];
+    event.date = new Date(event.date!);
   };
 
   private getEvent = (id: string) => {

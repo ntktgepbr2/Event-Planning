@@ -4,6 +4,7 @@ import { Button, Header, Item, Segment, Image, Label } from "semantic-ui-react";
 import { Event } from "../../../app/models/event";
 import { Link } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
+import { format } from "date-fns";
 
 const eventImageStyle = {
   filter: "brightness(30%)",
@@ -44,7 +45,7 @@ export default observer(function EventDetailedHeader({ event }: Props) {
             <Item>
               <Item.Content>
                 <Header size='huge' content={event.title} style={{ color: "white" }} />
-                <p>{event.date}</p>
+                <p>{format(event.date!, "dd MMM yyyy")}</p>
                 <p>
                   Hosted by <strong>{event.host?.displayName}</strong>
                 </p>
@@ -75,14 +76,21 @@ export default observer(function EventDetailedHeader({ event }: Props) {
             </Button>
           </>
         ) : event.isGoing ? (
-          <Button loading={loading} onClick={()=>{updateAttendance(true)}}>
+          <Button
+            loading={loading}
+            onClick={() => {
+              updateAttendance(true);
+            }}
+          >
             Cancel attendance
           </Button>
         ) : (
           <Button
             disabled={event.isCanceled || event.isMaximumAttendensReached}
             loading={loading}
-            onClick={()=>{updateAttendance()}}
+            onClick={() => {
+              updateAttendance();
+            }}
             color='teal'
           >
             Join Event

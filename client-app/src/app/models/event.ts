@@ -4,7 +4,7 @@ import { Field } from "./field";
 export interface Event {
   id: string;
   title: string;
-  date: string;
+  date: Date;
   description: string;
   category: string;
   city: string;
@@ -30,7 +30,7 @@ export class EventFormValues {
   title: string = "";
   category: string = "";
   description: string = "";
-  date: string = "";
+  date!: Date;
   city: string = "";
   maximumAttendees?: number;
   fields: Field[] = [];

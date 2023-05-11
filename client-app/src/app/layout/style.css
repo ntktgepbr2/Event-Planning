@@ -38,3 +38,6 @@ div.react-calendar {
   font-size: 1.7em;
   font-weight: normal;
 }
+.react-datepicker-wrapper{
+width: 100%;
+}
