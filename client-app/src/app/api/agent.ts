@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { history } from "../..";
 
 axios.defaults.baseURL = "https://localhost:5001/api";
+
 axios.interceptors.request.use((config) => {
   const token = store.commonStore.token;
   if (token) config.headers.Authorization = `Bearer ${token}`;

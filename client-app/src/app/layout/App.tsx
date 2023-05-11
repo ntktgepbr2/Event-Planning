@@ -20,6 +20,7 @@ import TestErrors from "../../features/errors/TestError";
 import { ToastContainer } from "react-toastify";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
+import ModalContainer from "../common/modals/ModalContainer";
 
 function App() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function App() {
   return (
     <>
       <ToastContainer position='bottom-right' hideProgressBar />
+      <ModalContainer />
       <NavBar />
       <Container style={{ marginTop: "7em" }}>
         <Switch>
