@@ -14,6 +14,6 @@ public class EventDto
     public int MaximumAttendees { get; set; }
     public string HostUserName { get; set; }
     public bool IsCanceled { get; set; }
-    public ICollection<Profile> Attendees { get; set; } = new List<Profile>();
+    public ICollection<EventAttendeeDto> Attendees { get; set; } = new List<EventAttendeeDto>();
     public ICollection<Field> Fields { get; set; } = new List<Field>();
 }

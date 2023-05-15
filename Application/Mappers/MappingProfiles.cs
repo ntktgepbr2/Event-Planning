@@ -13,12 +13,15 @@ namespace Application.Mappers
                 .ForMember(d => d.HostUserName,
                     o => o.MapFrom(s => s.Attendees.FirstOrDefault(a => a.IsHost).User.UserName));
 
-            CreateMap<EventAttendee, Profiles.Profile>()
+            CreateMap<EventAttendee, EventAttendeeDto>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.User.DisplayName))
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.User.UserName))
-                .ForMember(d => d.Bio, o => o.MapFrom(s => s.User.Bio));
+                .ForMember(d => d.Bio, o => o.MapFrom(s => s.User.Bio))
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.User.Photos.FirstOrDefault(x => x.IsMain).Url));
 
-            CreateMap<User, Profiles.Profile>().ReverseMap();
+            CreateMap<User, Profiles.Profile>()
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ReverseMap();
 
             CreateMap<Field, Field>()
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))

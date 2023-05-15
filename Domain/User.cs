@@ -14,4 +14,5 @@ public class User : IdentityUser
     public string Birthday { get; set; }
 
     public ICollection<EventAttendee> Events { get; set; }
+    public ICollection<Photo> Photos { get; set; }
 }

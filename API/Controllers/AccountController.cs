@@ -37,7 +37,8 @@ public class AccountController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
-        var user = await _userManager.FindByEmailAsync(loginDto.Email);
+        var user = await _userManager.Users.Include(u => u.Photos)
+            .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
         if (user == null) return Unauthorized("Invalid email");
 
@@ -150,17 +151,18 @@ public class AccountController : ControllerBase
     {
         return new UserDto()
         {
-            DisplayName = user.DisplayName,
-            Image = null,
+            DisplayName = user?.DisplayName,
+            Image = user?.Photos.FirstOrDefault(x => x.IsMain)?.Url,
             Token = _tokenService.CreateToken(user),
-            UserName = user.UserName,
+            UserName = user?.UserName,
         };
     }
 
     private async Task<User> GetUser()
     {
-        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.Users.Include(u => u.Photos)
+            .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+
         return user;
     }
 

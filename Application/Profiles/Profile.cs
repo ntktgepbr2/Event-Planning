@@ -1,4 +1,6 @@
-﻿namespace Application.Profiles;
+﻿using Domain;
+
+namespace Application.Profiles;
 
 public class Profile
 {
@@ -12,4 +14,5 @@ public class Profile
     public string Phone { get; set; }
     public string Address { get; set; }
     public string Birthday { get; set; }
+    public ICollection<Photo> Photos { get; set; }
 }
