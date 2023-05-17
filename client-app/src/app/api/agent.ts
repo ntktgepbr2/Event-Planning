@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { Event, EventFormValues } from "../models/event";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
-import { Profile, ProfileFormValues } from "../models/profile";
+import { Photo, Profile, ProfileFormValues } from "../models/profile";
 import { ToastContainer, toast } from "react-toastify";
 import { history } from "../..";
 
@@ -94,6 +94,17 @@ const profiles = {
   getCurrentProfile: () => requests.get<Profile>("/account/profile"),
   updateCurrentProfile: (profile: ProfileFormValues) =>
     requests.put<void>("/account/profile", profile),
+  get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+  uploadPhoto: (file: Blob) => {
+    let formData = new FormData();
+    formData.append("File", file);
+
+    return axios.post<Photo>("photos", formData, {
+      headers: { "Content-type": "multipart/form-data" },
+    });
+  },
+  setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => requests.delete(`/photos/${id}`),
 };
 
 const agent = {

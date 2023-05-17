@@ -23,12 +23,15 @@ export default observer(function EventListItem({ event }: Props) {
         )}
         <Item.Group>
           <Item>
-            <Item.Image size='tiny' circular src='/assets/user.png' />
+            <Item.Image size='tiny' circular src={event.host?.image || "/assets/user.png"} />
             <Item.Content>
               <Item.Header as={Link} to={`/events/${event.id}`}>
                 {event.title}
               </Item.Header>
-              <Item.Description>Hosted by {event.host?.displayName}</Item.Description>
+              <Item.Description>
+                Hosted by{" "}
+                <Link to={`/profiles/${event.hostUserName}`}>{event.host?.displayName}</Link>
+              </Item.Description>
               {event.isHost && (
                 <Item.Description>
                   <Label basic color='orange'>

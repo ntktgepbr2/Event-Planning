@@ -11,6 +11,7 @@ export interface Profile {
   phone?: string;
   address?: string;
   birthday?: string;
+  photos?: Photo[];
 }
 
 export class Profile implements Profile {
@@ -19,6 +20,12 @@ export class Profile implements Profile {
     this.displayName = user.displayName;
     this.image = user.image;
   }
+}
+
+export interface Photo {
+  id: string;
+  url: string;
+  isMain: boolean;
 }
 
 export class ProfileFormValues {
