@@ -9,7 +9,7 @@ import ProfileContent from "./ProfileContent";
 export default observer(function ProfilePage() {
   const { username } = useParams<{ username: string }>();
   const {
-    profileStore: { loadProfile, loadLatestProfile, profile },
+    profileStore: {loadLatestProfile, profile },
   } = useStore();
 
   useEffect(() => {

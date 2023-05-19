@@ -23,15 +23,13 @@ public class AccountController : ControllerBase
     private readonly SignInManager<User> _signInManager;
     private readonly TokenService _tokenService;
     private readonly EmailSender _emailSender;
-    private readonly IMapper _mapper;
 
-    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService, EmailSender emailSender, IMapper mapper)
+    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService, EmailSender emailSender)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
         _emailSender = emailSender;
-        _mapper = mapper;
     }
 
     [HttpPost("login")]
@@ -125,27 +123,6 @@ public class AccountController : ControllerBase
         return CreateUserDto(user);
     }
 
-    [Authorize]
-    [HttpGet("profile")]
-    public async Task<ActionResult<Profile>> GetCurrentUserProfile()
-    {
-        var user = await GetUser();
-
-        return _mapper.Map<Profile>(user);
-    }
-
-    [Authorize]
-    [HttpPut("profile")]
-    public async Task<ActionResult<Profile>> UpdateCurrentUserProfile(Profile profile)
-    {
-        var user = await GetUser();
-
-        _mapper.Map(profile, user);
-
-        await _userManager.UpdateAsync(user);
-
-        return Ok();
-    }
 
     private UserDto CreateUserDto(User user)
     {

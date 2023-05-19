@@ -58,16 +58,13 @@ export default observer(function EventListItem({ event }: Props) {
       </Segment>
       {event.fields &&
         event.fields.map((field) => {
-          console.log(field);
           return (
-            <>
-              <Segment key={field.id}>
-                <span>
-                  <Icon name='bookmark' />
-                  {field.name} : {field.value}
-                </span>
-              </Segment>
-            </>
+            <Segment key={field.id}>
+              <span>
+                <Icon name='bookmark' />
+                {field.name} : {field.value}
+              </span>
+            </Segment>
           );
         })}
       <Segment secondary>

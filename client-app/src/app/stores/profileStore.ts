@@ -19,20 +19,9 @@ export default class ProfileStore {
     return false;
   }
 
-  loadProfile = async () => {
-    try {
-      const profile = await agent.profiles.getCurrentProfile();
-      runInAction(() => {
-        this.profile = profile;
-      });
-      return profile;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   loadLatestProfile = async (username: string) => {
     try {
+      console.log(username);
       const profile = await agent.profiles.get(username);
       runInAction(() => {
         this.profile = profile;
@@ -45,7 +34,7 @@ export default class ProfileStore {
 
   updateProfile = async (profileFormValues: ProfileFormValues) => {
     try {
-      await agent.profiles.updateCurrentProfile(profileFormValues);
+      await agent.profiles.updateProfile(profileFormValues);
     } catch (error) {
       console.log(error);
     }

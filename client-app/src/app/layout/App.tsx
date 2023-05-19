@@ -21,6 +21,7 @@ import { ToastContainer } from "react-toastify";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
 import ModalContainer from "../common/modals/ModalContainer";
+import ProfileAbout from "../../features/profiles/ProfileAbout";
 
 function App() {
   const location = useLocation();

@@ -91,9 +91,8 @@ const account = {
 };
 
 const profiles = {
-  getCurrentProfile: () => requests.get<Profile>("/account/profile"),
-  updateCurrentProfile: (profile: ProfileFormValues) =>
-    requests.put<void>("/account/profile", profile),
+  updateProfile: (profile: ProfileFormValues) =>
+    requests.put<void>("/profiles", profile),
   get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
   uploadPhoto: (file: Blob) => {
     let formData = new FormData();

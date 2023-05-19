@@ -1,3 +1,4 @@
+using Application.Comments;
 using Application.Events;
 using AutoMapper;
 using Domain;
@@ -20,8 +21,10 @@ namespace Application.Mappers
                 .ForMember(d => d.Image, o => o.MapFrom(s => s.User.Photos.FirstOrDefault(x => x.IsMain).Url));
 
             CreateMap<User, Profiles.Profile>()
-                .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url))
-                .ReverseMap();
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url));
+
+            CreateMap<Profiles.Profile,User >()
+                .ForMember(d => d.Photos, o => o.Ignore());
 
             CreateMap<Field, Field>()
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
