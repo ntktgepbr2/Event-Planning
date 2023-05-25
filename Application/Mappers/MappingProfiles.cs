@@ -31,6 +31,11 @@ namespace Application.Mappers
                 .ForMember(d => d.Value, o => o.MapFrom(s => s.Value))
                 .ForMember(d => d.Event, o => o.Ignore())
                 .ForMember(d => d.EventId, o => o.Ignore());
+
+            CreateMap<Comment, CommentDto>()
+                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName))
+                .ForMember(d => d.UserName, o => o.MapFrom(s => s.Author.UserName))
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.Author.Photos.FirstOrDefault(x => x.IsMain).Url));
         }
     }
 }

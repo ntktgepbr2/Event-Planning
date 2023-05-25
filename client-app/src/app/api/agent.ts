@@ -6,7 +6,7 @@ import { Photo, Profile, ProfileFormValues } from "../models/profile";
 import { ToastContainer, toast } from "react-toastify";
 import { history } from "../..";
 
-axios.defaults.baseURL = "https://localhost:5001/api";
+axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.request.use((config) => {
   const token = store.commonStore.token;
@@ -91,8 +91,7 @@ const account = {
 };
 
 const profiles = {
-  updateProfile: (profile: ProfileFormValues) =>
-    requests.put<void>("/profiles", profile),
+  updateProfile: (profile: ProfileFormValues) => requests.put<void>("/profiles", profile),
   get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
   uploadPhoto: (file: Blob) => {
     let formData = new FormData();

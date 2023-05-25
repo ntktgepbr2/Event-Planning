@@ -7,7 +7,7 @@ import { format } from "date-fns";
 
 export default class EventStore {
   events: Event[] = [];
-  selectedEvent: Event | undefined = undefined;
+  selectedEvent: Event | undefined;
   editMode = false;
   loading = false;
   loadingInitial = false;
@@ -23,7 +23,7 @@ export default class EventStore {
   get groupedEvents() {
     return Object.entries(
       this.eventsByDate.reduce((events, event) => {
-        const date = format(event.date!, "dd MMM yyyy");
+        const date = format(event.date, "dd MMM yyyy");
         events[date] = events[date] ? [...events[date], event] : [event];
         return events;
       }, {} as { [key: string]: Event[] })

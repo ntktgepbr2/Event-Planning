@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import EventDetailedInfo from "./EventDetailedInfo";
 import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedSidebar from "./EventDetailedSidebar";
+import EventDetailedChat from "./EventDetailedChat";
 
 export default observer(function EventDetails() {
   const { eventStore } = useStore();
@@ -14,7 +15,15 @@ export default observer(function EventDetails() {
 
   useEffect(() => {
     if (id) loadEvent(id);
+
+    return () => {
+      clearSelectedEvent();
+    };
   }, [id, loadEvent]);
+
+  function clearSelectedEvent() {
+    eventStore.selectedEvent = undefined;
+  }
 
   if (loadingInitial || !event) return <></>;
 
@@ -23,6 +32,7 @@ export default observer(function EventDetails() {
       <Grid.Column width={10}>
         <EventDetailedHeader event={event} />
         <EventDetailedInfo event={event} />
+        <EventDetailedChat eventId={event.id} />
       </Grid.Column>
       <Grid.Column width={6}>
         <EventDetailedSidebar event={event!} />

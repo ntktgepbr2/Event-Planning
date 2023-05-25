@@ -53,22 +53,19 @@ export default observer(function EventDetailedInfo({ event }: Props) {
       </Segment>
       {event.fields &&
         event.fields.map((field) => {
-          console.log(field);
           return (
-            <>
-              <Segment attached>
-                <Grid verticalAlign='middle'>
-                  <Grid.Column width={1}>
-                    <Icon name='bookmark' size='large' color='teal' />
-                  </Grid.Column>
-                  <Grid.Column width={11}>
-                    <span>
-                      {field.name} : {field.value}
-                    </span>
-                  </Grid.Column>
-                </Grid>
-              </Segment>
-            </>
+            <Segment attached key={field.id}>
+              <Grid verticalAlign='middle'>
+                <Grid.Column width={1}>
+                  <Icon name='bookmark' size='large' color='teal' />
+                </Grid.Column>
+                <Grid.Column width={11}>
+                  <span>
+                    {field.name} : {field.value}
+                  </span>
+                </Grid.Column>
+              </Grid>
+            </Segment>
           );
         })}
     </Segment.Group>
