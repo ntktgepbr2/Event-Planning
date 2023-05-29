@@ -11,6 +11,9 @@ export interface Profile {
   phone?: string;
   address?: string;
   birthday?: string;
+  followersCount: number;
+  followingCount: number;
+  following: boolean;
   photos?: Photo[];
 }
 

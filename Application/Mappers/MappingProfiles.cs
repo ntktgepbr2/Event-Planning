@@ -9,6 +9,8 @@ namespace Application.Mappers
     {
         public MappingProfiles()
         {
+            string currentUserName = null;
+
             CreateMap<Event, Event>();
             CreateMap<Event, EventDto>()
                 .ForMember(d => d.HostUserName,
@@ -18,10 +20,18 @@ namespace Application.Mappers
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.User.DisplayName))
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.User.UserName))
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.User.Bio))
-                .ForMember(d => d.Image, o => o.MapFrom(s => s.User.Photos.FirstOrDefault(x => x.IsMain).Url));
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.User.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(d => d.FollowersCount, o => o.MapFrom(s => s.User.Followers.Count))
+                .ForMember(d => d.FollowingCount, o => o.MapFrom(s => s.User.Followings.Count))
+                .ForMember(d => d.Following,
+                    o => o.MapFrom(s => s.User.Followers.Any(x => x.Observer.UserName == currentUserName)));
 
             CreateMap<User, Profiles.Profile>()
-                .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url));
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(d => d.FollowersCount, o => o.MapFrom(s => s.Followers.Count))
+                .ForMember(d => d.FollowingCount, o => o.MapFrom(s => s.Followings.Count))
+                .ForMember(d => d.Following,
+                    o => o.MapFrom(s => s.Followers.Any(x => x.Observer.UserName == currentUserName)));
 
             CreateMap<Profiles.Profile,User >()
                 .ForMember(d => d.Photos, o => o.Ignore());

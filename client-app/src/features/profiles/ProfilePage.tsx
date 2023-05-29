@@ -9,12 +9,15 @@ import ProfileContent from "./ProfileContent";
 export default observer(function ProfilePage() {
   const { username } = useParams<{ username: string }>();
   const {
-    profileStore: {loadLatestProfile, profile },
+    profileStore: { loadLatestProfile, profile, setActiveTab },
   } = useStore();
 
   useEffect(() => {
     loadLatestProfile(username);
-  }, [loadLatestProfile, username]);
+    return () => {
+      setActiveTab(0);
+    };
+  }, [loadLatestProfile, username, setActiveTab]);
 
   return (
     <Grid>

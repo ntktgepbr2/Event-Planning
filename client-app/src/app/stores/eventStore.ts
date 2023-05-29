@@ -34,7 +34,7 @@ export default class EventStore {
     try {
       this.setLoadingInitial(true);
       this.events = await agent.events.list();
-      this.events.map((event) => {
+      this.events.forEach((event) => {
         this.setEvent(event);
       });
       this.setLoadingInitial(false);
@@ -190,4 +190,15 @@ export default class EventStore {
       this.selectedEvent!.isMaximumAttendensReached = false;
     }
   }
+
+  updateAttendeeFollowing = (userName: string) => {
+    this.events.forEach((event) =>
+      event.attendees.forEach((attendee) => {
+        if (attendee.userName === userName) {
+          attendee.following ? attendee.followersCount-- : attendee.followersCount++;
+          attendee.following = !attendee.following;
+        }
+      })
+    );
+  };
 }

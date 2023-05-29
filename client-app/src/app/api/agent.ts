@@ -1,9 +1,9 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Event, EventFormValues } from "../models/event";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 import { Photo, Profile, ProfileFormValues } from "../models/profile";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { history } from "../..";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
@@ -103,6 +103,9 @@ const profiles = {
   },
   setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
   deletePhoto: (id: string) => requests.delete(`/photos/${id}`),
+  updateFollowing: (userName: string) => requests.post(`/follow/${userName}`, {}),
+  listFollowings: (userName: string, predicate: string) =>
+    requests.get<Profile[]>(`/follow/${userName}?predicate=${predicate}`),
 };
 
 const agent = {

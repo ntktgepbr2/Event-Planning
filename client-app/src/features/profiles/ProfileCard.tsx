@@ -2,15 +2,13 @@ import { observer } from "mobx-react-lite";
 import { Profile } from "../../app/models/profile";
 import { Card, Icon, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import FollowButton from "./FollowButton";
 
 interface Props {
   profile: Profile;
 }
 
 export default observer(function ProfileCard({ profile }: Props) {
-  const truncatedBio =
-    profile.bio && profile.bio.length > 100 ? profile.bio.slice(0, 100) + "..." : profile.bio;
-
   return (
     <Card as={Link} to={`/profiles/${profile.userName}`}>
       <Image src={profile.image || "/assets/user.png"} />
@@ -24,8 +22,9 @@ export default observer(function ProfileCard({ profile }: Props) {
       </Card.Content>
       <Card.Content extra>
         <Icon name='user' />
-        20 followers
+        {profile.followersCount}
       </Card.Content>
+      <FollowButton profile={profile} />
     </Card>
   );
 });
