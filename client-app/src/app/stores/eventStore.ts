@@ -4,6 +4,7 @@ import agent from "../api/agent";
 import { store } from "./store";
 import { Profile } from "../models/profile";
 import { format } from "date-fns";
+import { Pagination, PagingParams } from "../models/pagination";
 
 export default class EventStore {
   events: Event[] = [];
@@ -11,9 +12,39 @@ export default class EventStore {
   editMode = false;
   loading = false;
   loadingInitial = false;
+  pagination: Pagination | null = null;
+  pagingParams = new PagingParams();
+  predicate = new Map().set("all", true);
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setPagingParams = (pagingparams: PagingParams) => {
+    this.pagingParams = pagingparams;
+  };
+
+  setPredicate = (predicate: string, value:string | Date) => {
+    switch(predicate){
+      case 'all':
+    }
+  };
+
+  get axiosParams() {
+    const params = new URLSearchParams();
+
+    params.append("pageNumber", this.pagingParams.pageNumber.toString());
+    params.append("pageSize", this.pagingParams.pageSize.toString());
+
+    this.predicate.forEach((value, key) => {
+      if (key === "startDate") {
+        params.append(key, (value as Date).toISOString());
+      } else {
+        params.append(key, value);
+      }
+    });
+
+    return params;
   }
 
   get eventsByDate() {
@@ -33,15 +64,21 @@ export default class EventStore {
   loadEvents = async () => {
     try {
       this.setLoadingInitial(true);
-      this.events = await agent.events.list();
+      const result = await agent.events.list(this.axiosParams);
+      this.events = this.events.concat(result.data);
       this.events.forEach((event) => {
         this.setEvent(event);
       });
+      this.setPagination(result.pagination);
       this.setLoadingInitial(false);
     } catch (error) {
       console.log(error);
       this.setLoadingInitial(false);
     }
+  };
+
+  setPagination = (pagination: Pagination) => {
+    this.pagination = pagination;
   };
 
   loadEvent = async (id: string) => {

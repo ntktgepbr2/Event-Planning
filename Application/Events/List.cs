@@ -11,9 +11,12 @@ namespace Application.Events
 {
     public class List
     {
-        public class Query : IRequest<Result<List<EventDto>>>{}
+        public class Query : IRequest<Result<PagedList<EventDto>>>
+        {
+            public EventParams Params { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<List<EventDto>>>
+        public class Handler : IRequestHandler<Query, Result<PagedList<EventDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -26,14 +29,29 @@ namespace Application.Events
                 _userAccessor = userAccessor;
             }
 
-            public async Task<Result<List<EventDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<EventDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var userEvents = await _context.Events
-                    .AsNoTracking()
-                    .ProjectTo<EventDto>(_mapper.ConfigurationProvider, new{currentUserName = _userAccessor.GetUserName()})
-                    .ToListAsync(cancellationToken);
+                var query = _context.Events
+                    .Where(d => d.Date >= request.Params.StartDate)
+                    .OrderBy(d => d.Date)
+                    .ProjectTo<EventDto>(_mapper.ConfigurationProvider,
+                        new {currentUserName = _userAccessor.GetUserName()})
+                    .AsQueryable();
 
-                return Result<List<EventDto>>.Success(userEvents);
+                if (request.Params.IsGoing && !request.Params.IsHost)
+                {
+                    query = query.Where(x => x.HostUserName == _userAccessor.GetUserName());
+                }
+
+                if (request.Params.IsHost && !request.Params.IsGoing)
+                {
+                    query = query.Where(x => x.Attendees.Any(a => a.UserName == _userAccessor.GetUserName()));
+                }
+
+                var pagedEvents =
+                    await PagedList<EventDto>.CreateAsync(query, request.Params.PageNumber, request.Params.PageSize);
+
+                return Result<PagedList<EventDto>>.Success(pagedEvents);
             }
         }
     }

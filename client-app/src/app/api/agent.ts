@@ -5,6 +5,7 @@ import { store } from "../stores/store";
 import { Photo, Profile, ProfileFormValues } from "../models/profile";
 import { toast } from "react-toastify";
 import { history } from "../..";
+import { PaginatedResult } from "../models/pagination";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -17,12 +18,18 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   async (response) => {
     await sleep(1000);
+    const pagination = response.headers["pagination"];
+
+    if (pagination) {
+      response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+
+      return response as AxiosResponse<PaginatedResult<any>>;
+    }
+
     return response;
   },
   (error: any) => {
     const { data, status, config } = error.response!;
-
-    console.log(error.response);
 
     switch (status) {
       case 400:
@@ -73,7 +80,8 @@ const requests = {
 };
 
 const events = {
-  list: () => requests.get<Event[]>("/events"),
+  list: (params: URLSearchParams) =>
+    axios.get<PaginatedResult<Event[]>>("/events", { params }).then(responseBody),
   details: (id: string) => requests.get<Event>(`/events/${id}`),
   create: (event: EventFormValues) => requests.post<void>(`/events`, event),
   update: (event: EventFormValues) => requests.put<void>(`/events/${event.id}`, event),
