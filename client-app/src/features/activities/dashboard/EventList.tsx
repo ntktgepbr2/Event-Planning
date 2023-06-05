@@ -16,7 +16,9 @@ export default observer(function EventList() {
             {group}
           </Header>
           {events.map((event) => (
-            <EventListItem key={event.id} event={event} />
+            <>
+              {console.log(event.id)} <EventListItem key={event.id} event={event} />
+            </>
           ))}
         </Fragment>
       ))}

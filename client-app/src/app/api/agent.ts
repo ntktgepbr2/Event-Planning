@@ -6,6 +6,7 @@ import { Photo, Profile, ProfileFormValues } from "../models/profile";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { PaginatedResult } from "../models/pagination";
+import { UserEvent } from "../models/userEvent";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -114,6 +115,8 @@ const profiles = {
   updateFollowing: (userName: string) => requests.post(`/follow/${userName}`, {}),
   listFollowings: (userName: string, predicate: string) =>
     requests.get<Profile[]>(`/follow/${userName}?predicate=${predicate}`),
+  listUserEvents: (userName: string, predicate: string) =>
+    requests.get<UserEvent[]>(`/profiles/${userName}/events?predicate=${predicate}`),
 };
 
 const agent = {

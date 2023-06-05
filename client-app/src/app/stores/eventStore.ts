@@ -96,7 +96,7 @@ export default class EventStore {
     try {
       this.setLoadingInitial(true);
       const result = await agent.events.list(this.axiosParams);
-      this.events = this.events.concat(result.data);
+      this.events = result.data;
       this.events.forEach((event) => {
         this.setEvent(event);
       });
@@ -141,7 +141,7 @@ export default class EventStore {
       event.isHost = event.hostUserName === user.userName;
       event.host = event.attendees?.find((x) => x.userName === event.hostUserName);
     }
-    event.date = new Date(event.date!);
+    event.date = new Date(event.date);
   };
 
   private getEvent = (id: string) => {

@@ -2,7 +2,6 @@ import { Button, Grid, Loader } from "semantic-ui-react";
 import EventList from "./EventList";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
-import LoadingComponents from "../../../app/layout/LoadingComponents";
 import { useEffect, useState } from "react";
 import EventFilters from "./EventFilters";
 import { PagingParams } from "../../../app/models/pagination";
