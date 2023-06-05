@@ -2,7 +2,6 @@
 using System.Text;
 using API.DTOs;
 using API.Services;
-using AutoMapper;
 using Domain;
 using Infrastructure.Email;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using Profile = Application.Profiles.Profile;
 
 namespace API.Controllers;
 

@@ -1,4 +1,3 @@
-using Application.Core;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Application.Events;
@@ -10,7 +9,7 @@ namespace API.Controllers
     public class EventsController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetEvents([FromQuery] PagingParams param,CancellationToken ct)
+        public async Task<IActionResult> GetEvents([FromQuery] EventParams param,CancellationToken ct)
         {
             var result = await Mediator.Send(new List.Query{Params = param}, ct);
 

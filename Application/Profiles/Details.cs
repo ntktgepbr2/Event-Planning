@@ -1,5 +1,4 @@
 ﻿using Application.Core;
-using Application.Events;
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;

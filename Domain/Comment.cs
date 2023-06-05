@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Domain;
+﻿namespace Domain;
 
 public class Comment
 {

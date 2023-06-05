@@ -1,5 +1,4 @@
-﻿using Application.Events;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Create = Application.Comments.Create;
 

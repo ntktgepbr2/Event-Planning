@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { Event, EventFormValues } from "../models/event";
 import agent from "../api/agent";
 import { store } from "./store";
@@ -18,15 +18,46 @@ export default class EventStore {
 
   constructor() {
     makeAutoObservable(this);
+
+    reaction(
+      () => this.predicate.keys(),
+      () => {
+        this.pagingParams = new PagingParams();
+        this.events = [];
+        this.loadEvents();
+      }
+    );
   }
 
   setPagingParams = (pagingparams: PagingParams) => {
     this.pagingParams = pagingparams;
   };
 
-  setPredicate = (predicate: string, value:string | Date) => {
-    switch(predicate){
-      case 'all':
+  setPredicate = (predicate: string, value: string | Date) => {
+    const resetPredicate = () => {
+      this.predicate.forEach((value, key) => {
+        if (key !== "startDate") {
+          this.predicate.delete(key);
+        }
+      });
+    };
+
+    switch (predicate) {
+      case "all":
+        resetPredicate();
+        this.predicate.set("all", true);
+        break;
+      case "isGoing":
+        resetPredicate();
+        this.predicate.set("isGoing", true);
+        break;
+      case "isHost":
+        resetPredicate();
+        this.predicate.set("isHost", true);
+        break;
+      case "startDate":
+        this.predicate.delete("startDate");
+        this.predicate.set("startDate", value);
     }
   };
 

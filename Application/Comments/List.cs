@@ -1,5 +1,4 @@
 ﻿using Application.Core;
-using Application.Events;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;

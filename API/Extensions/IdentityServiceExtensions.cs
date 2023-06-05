@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using System.Text;
+﻿using System.Text;
 using API.Services;
 using Domain;
 using Infrastructure.Security;
