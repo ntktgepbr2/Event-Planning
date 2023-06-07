@@ -44,11 +44,12 @@ namespace API
             app.UseCsp(opt => opt
                 .BlockAllMixedContent()
                 .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "https://cdn.jsdelivr.net"))
-                .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:", "https://cdn.jsdelivr.net"))
+                .FontSources(s =>
+                    s.Self().CustomSources("https://fonts.gstatic.com", "data:", "https://cdn.jsdelivr.net"))
                 .FormActions(s => s.Self())
                 .FrameAncestors(s => s.Self())
                 .ImageSources(s => s.Self().CustomSources("http://res.cloudinary.com"))
-                .ScriptSources(s => s.Self().CustomSources("sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=", "unsafe-eval")));
+                .ScriptSources(s => s.UnsafeEval().Self()));
 
             if (env.IsDevelopment())
             {
