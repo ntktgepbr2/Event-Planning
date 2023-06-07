@@ -23,6 +23,7 @@ public class PhotoAccessor : IPhotoAccessor
     public async Task<PhotoUploadResult> AddPhoto(IFormFile file)
     {
         if (file.Length <= 0) return null;
+
         await using var stream = file.OpenReadStream();
 
         var uploadParams = new ImageUploadParams

@@ -38,8 +38,6 @@ public class AccountController : ControllerBase
 
         if (user == null) return Unauthorized("Invalid email");
 
-        if (user.UserName == "tom") user.EmailConfirmed = true;
-
         var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
         if (result.Succeeded)
