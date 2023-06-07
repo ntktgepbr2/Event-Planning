@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Grid, Card, Image, Divider } from "semantic-ui-react";
+import { Grid, Card, Image } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
@@ -20,7 +20,6 @@ export default observer(function ProfileUserEvents() {
               style={{ marginBottom: "3%", textAlign: "center" }}
             >
               <Image src={`/assets/categoryImages/${userEvent.category}.jpg`} size='huge' fluid />
-
               <Card.Content>
                 <Card.Header>{userEvent.title}</Card.Header>
               </Card.Content>

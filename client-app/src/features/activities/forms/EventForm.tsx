@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Header, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
@@ -16,7 +16,7 @@ import { categoryOptions } from "../../../app/common/options/categoryOptions";
 
 export default observer(function EventForm() {
   const { eventStore } = useStore();
-  const { createEvent, updateEvent, loading, loadEvent, loadingInitial } = eventStore;
+  const { createEvent, updateEvent, loadEvent } = eventStore;
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
   const [event, setEvent] = useState<EventFormValues>(new EventFormValues());
@@ -46,12 +46,6 @@ export default observer(function EventForm() {
       updateEvent({ ...event, fields: fields }).then(() => history.push(`/events/${event.id}`));
     }
   }
-
-  // function handleSubmit(evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-  //   const { name, value } = evt.target;
-  //   console.log(name, value);
-  //   setEvent((prevEvent) => ({ ...prevEvent, [name]: value }));
-  // }
 
   const handleAdditionalInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -150,8 +144,6 @@ export default observer(function EventForm() {
                 />
               </div>
             ))}
-            <Button type='button' onClick={handleAddField} content='Add Field' />
-            <Button type='button' onClick={handleRemoveField} content='Remove Field' />
             <Button
               disabled={isSubmitting || !dirty || !isValid}
               floated='right'

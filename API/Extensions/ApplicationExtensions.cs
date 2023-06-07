@@ -21,7 +21,7 @@ namespace API.Extensions
           });
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             }
             );
             services.AddCors(opt =>
@@ -31,6 +31,7 @@ namespace API.Extensions
                     policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000");
                 });
             });
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IUserAccessor, UserAccessor>();

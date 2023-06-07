@@ -4,7 +4,6 @@ import { Profile } from "../../app/models/profile";
 import ProfileAbout from "./ProfileAbout";
 import ProfileFollowings from "./ProfileFollowings";
 import { useStore } from "../../app/stores/store";
-import ProfileUserEvents from "./ProfileUserEventsContent";
 import ProfileUserEventsContent from "./ProfileUserEventsContent";
 
 interface Props {

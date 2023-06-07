@@ -8,7 +8,7 @@ import { history } from "../..";
 import { PaginatedResult } from "../models/pagination";
 import { UserEvent } from "../models/userEvent";
 
-axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.request.use((config) => {
   const token = store.commonStore.token;
@@ -18,7 +18,6 @@ axios.interceptors.request.use((config) => {
 });
 axios.interceptors.response.use(
   async (response) => {
-    await sleep(1000);
     const pagination = response.headers["pagination"];
 
     if (pagination) {

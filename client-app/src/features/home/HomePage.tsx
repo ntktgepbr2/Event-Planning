@@ -14,7 +14,7 @@ export default function HomePage() {
           <Image size='massive' src='/assets/logo.png' alt='logo' style={{ marginBottom: "1em" }} />
           Event planning
         </Header>
-        {userStore.IsLoggedIn ? (
+        {userStore.isLoggedIn ? (
           <>
             <Header as='h2' inverted content='Welcome to Reactivities' />
             <Button as={Link} to='/events' size='huge' inverted>

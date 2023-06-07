@@ -118,6 +118,8 @@ public class AccountController : ControllerBase
     {
         var user = await GetUser();
 
+        if (user == null) return Unauthorized();
+
         return CreateUserDto(user);
     }
 

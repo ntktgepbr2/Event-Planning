@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 
 export default observer(function NavBar() {
   const {
-    userStore: { user, logout, IsLoggedIn },
+    userStore: { user, logout, isLoggedIn },
   } = useStore();
 
   return (
@@ -15,7 +15,7 @@ export default observer(function NavBar() {
           <img src='/assets/logo.png' alt='logo' style={{ marginRight: "10px" }} />
           Event Planning
         </Menu.Item>
-        {IsLoggedIn && (
+        {isLoggedIn && (
           <>
             <Menu.Item as={NavLink} to='/events' name='Events' />
             <Menu.Item as={NavLink} to='/errors' name='Errors' />
