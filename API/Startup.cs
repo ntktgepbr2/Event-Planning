@@ -48,7 +48,7 @@ namespace API
                     s.Self().CustomSources("https://fonts.gstatic.com", "data:", "https://cdn.jsdelivr.net"))
                 .FormActions(s => s.Self())
                 .FrameAncestors(s => s.Self())
-                .ImageSources(s => s.Self().CustomSources("http://res.cloudinary.com"))
+                .ImageSources(s => s.Self().CustomSources("http://res.cloudinary.com", "blob:" ))
                 .ScriptSources(s => s.UnsafeEval().Self()));
 
             if (env.IsDevelopment())
