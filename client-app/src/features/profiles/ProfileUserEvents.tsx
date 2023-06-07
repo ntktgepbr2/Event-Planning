@@ -19,7 +19,7 @@ export default observer(function ProfileUserEvents() {
               to={`/events/${userEvent.id}`}
               style={{ marginBottom: "3%", textAlign: "center" }}
             >
-              <Image src={`/assets/categoryImages/${userEvent.category}.jpg`} size='huge' fluid />
+              <Image src={`/assets/categoryImages/${userEvent.category}.jpg`} fluid />
               <Card.Content>
                 <Card.Header>{userEvent.title}</Card.Header>
               </Card.Content>

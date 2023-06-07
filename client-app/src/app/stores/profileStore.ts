@@ -60,7 +60,6 @@ export default class ProfileStore {
 
   loadLatestProfile = async (username: string) => {
     try {
-      console.log(username);
       const profile = await agent.profiles.get(username);
       runInAction(() => {
         this.profile = profile;
