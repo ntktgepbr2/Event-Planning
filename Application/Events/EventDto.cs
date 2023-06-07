@@ -1,5 +1,4 @@
-﻿using Application.Profiles;
-using Domain;
+﻿using Domain;
 
 namespace Application.Events;
 

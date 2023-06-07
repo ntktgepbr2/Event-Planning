@@ -53,7 +53,7 @@ export default observer(function EventListItem({ event }: Props) {
       <Segment>
         <span>
           <Icon name='clock' />
-          {format(event.date!, "dd MMM yyyy h:mm aa")}
+          {format(event.date, "dd MMM yyyy h:mm aa")}
         </span>
       </Segment>
       {event.fields &&

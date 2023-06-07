@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Domain;
+﻿namespace Domain;
 
 public class Comment
 {
@@ -11,5 +9,5 @@ public class Comment
     public User Author { get; set; }
 
     public Event Event { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

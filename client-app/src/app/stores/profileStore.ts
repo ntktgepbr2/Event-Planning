@@ -2,6 +2,7 @@ import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { Photo, Profile, ProfileFormValues } from "../models/profile";
 import agent from "../api/agent";
 import { store } from "./store";
+import { UserEvent } from "../models/userEvent";
 
 export default class ProfileStore {
   profile: Profile | null = null;
@@ -9,7 +10,10 @@ export default class ProfileStore {
   loading: boolean = false;
   followings: Profile[] = [];
   loadingFollowings: boolean = false;
+  loadingUserEvents: boolean = false;
+  userEvents: UserEvent[] = [];
   activeTab = 0;
+  userEventTab = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -25,10 +29,26 @@ export default class ProfileStore {
         }
       }
     );
+
+    reaction(
+      () => this.userEventTab,
+      (userEventTab) => {
+        if (userEventTab === 1 || userEventTab === 2) {
+          const predicate = userEventTab === 1 ? "isPast" : "isHosting";
+          this.loadUserEvents(predicate);
+        } else {
+          this.loadUserEvents("future");
+        }
+      }
+    );
   }
 
   setActiveTab = (activeTab: any) => {
     this.activeTab = activeTab;
+  };
+
+  setUserEventTab = (userEventTab: any) => {
+    this.userEventTab = userEventTab;
   };
 
   get isCurrentUser() {
@@ -162,6 +182,22 @@ export default class ProfileStore {
     } catch (error) {
       runInAction(() => {
         this.loadingFollowings = false;
+      });
+    }
+  };
+
+  loadUserEvents = async (predicate: string) => {
+    this.loadingUserEvents = true;
+    try {
+      const userEvents = await agent.profiles.listUserEvents(this.profile?.userName!, predicate);
+      userEvents.forEach((event) => (event.date = new Date(event.date)));
+      runInAction(() => {
+        this.userEvents = userEvents;
+        this.loadingUserEvents = false;
+      });
+    } catch (error) {
+      runInAction(() => {
+        this.loadingUserEvents = false;
       });
     }
   };

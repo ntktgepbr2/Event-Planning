@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import useQuery from "../../app/common/util/hooks";
 import agent from "../../app/api/agent";
-import { stat } from "fs";
 import { Button, Header, Icon, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 

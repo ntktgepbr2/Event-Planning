@@ -21,7 +21,7 @@ import { ToastContainer } from "react-toastify";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
 import ModalContainer from "../common/modals/ModalContainer";
-import ProfileAbout from "../../features/profiles/ProfileAbout";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   const location = useLocation();
@@ -45,20 +45,20 @@ function App() {
       <Container style={{ marginTop: "7em" }}>
         <Switch>
           <Route exact path='/' component={HomePage} />
-          <Route exact path='/events' component={EventDashboard} />
-          <Route path='/events/:id' component={EventDetails} />
-          <Route
+          <PrivateRoute exact path='/events' component={EventDashboard} />
+          <PrivateRoute path='/events/:id' component={EventDetails} />
+          <PrivateRoute
             path={["/createEvent", "/manage/:id"]}
             component={EventForm}
             key={location.pathname}
           />
-          <Route exact path='/profiles/:username' component={ProfilePage} />
+          <PrivateRoute exact path='/profiles/:username' component={ProfilePage} />
           <Route exact path='/updateProfile' component={ProfileForm} />
           <Route exact path='/login' component={LoginForm} />
           <Route exact path='/register' component={RegisterForm} />
           <Route exact path='/account/registerSuccess' component={RegisterSuccess} />
           <Route exact path='/account/verifyEmail' component={ConfigrmEmail} />
-          <Route exact path='/errors' component={TestErrors} />
+          <PrivateRoute exact path='/errors' component={TestErrors} />
           <Route exact path='/server-error' component={ServerError} />
           <Route component={NotFound} />
         </Switch>

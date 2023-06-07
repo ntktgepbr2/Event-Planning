@@ -2,9 +2,7 @@ using Application.Core;
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Events
@@ -40,12 +38,13 @@ namespace Application.Events
 
                 if (request.Params.IsGoing && !request.Params.IsHost)
                 {
-                    query = query.Where(x => x.HostUserName == _userAccessor.GetUserName());
+                    query = query.Where(x => x.Attendees.Any(a => a.UserName == _userAccessor.GetUserName()));
+                    
                 }
 
                 if (request.Params.IsHost && !request.Params.IsGoing)
                 {
-                    query = query.Where(x => x.Attendees.Any(a => a.UserName == _userAccessor.GetUserName()));
+                    query = query.Where(x => x.HostUserName == _userAccessor.GetUserName());
                 }
 
                 var pagedEvents =

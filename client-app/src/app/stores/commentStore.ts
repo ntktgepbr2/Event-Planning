@@ -4,7 +4,6 @@ import {
   HubConnection,
   HubConnectionBuilder,
   LogLevel,
-  HttpTransportType,
 } from "@microsoft/signalr";
 import { store } from "./store";
 
@@ -19,7 +18,7 @@ export default class CommentStore {
   createHubConnection = (eventId: string) => {
     if (store.eventStore.selectedEvent) {
       this.hubConnection = new HubConnectionBuilder()
-        .withUrl("http://localhost:5000/chat?eventId=" + eventId, {
+        .withUrl(process.env.REACT_APP_CHAT_URL + "?eventId=" + eventId, {
           accessTokenFactory: () => store.userStore.user?.token!,
         })
         .withAutomaticReconnect()

@@ -8,12 +8,14 @@ import "react-calendar/dist/Calendar.css";
 import { createBrowserHistory } from "history";
 import { StoreContext, store } from "./app/stores/store";
 import { Router } from "react-router-dom";
+import ScrollToTop from "./app/layout/ScrollToTop";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 export const history = createBrowserHistory();
 root.render(
   <StoreContext.Provider value={store}>
     <Router history={history}>
+      <ScrollToTop />
       <App />
     </Router>
   </StoreContext.Provider>
