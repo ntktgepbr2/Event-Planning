@@ -43,13 +43,13 @@ namespace API
             app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
             app.UseCsp(opt => opt
                 .BlockAllMixedContent()
-                .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "https://cdn.jsdelivr.net"))
+                .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "http://fonts.googleapis.com", "https://cdn.jsdelivr.net", "sha256-wkAU1AW/h8YFx0XlzvpTllAKnFEO2tw8aKErs5a26LY="))
                 .FontSources(s =>
                     s.Self().CustomSources("https://fonts.gstatic.com", "data:", "https://cdn.jsdelivr.net"))
                 .FormActions(s => s.Self())
                 .FrameAncestors(s => s.Self())
-                .ImageSources(s => s.Self().CustomSources("http://res.cloudinary.com", "blob:" ))
-                .ScriptSources(s => s.UnsafeEval().Self()));
+                .ImageSources(s => s.Self().CustomSources("http://res.cloudinary.com", "blob:", "data:"))
+                .ScriptSources(s => s.UnsafeEval().Self().CustomSources("sha256-vpD4kayiUYOTFvnTWYCDknM5I3Nd2XUzIKx9+q6BNu0=", "sha256-Tui7QoFlnLXkJCSl1/JvEZdIXTmBttnWNxzJpXomQjg=")));
 
             if (env.IsDevelopment())
             {
