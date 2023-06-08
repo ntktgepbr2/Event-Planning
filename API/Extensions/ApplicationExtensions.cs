@@ -60,7 +60,12 @@ namespace API.Extensions
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://my-event-planning.herokuapp.com");
+                    policy
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithExposedHeaders("WWW-Authenticate", "Pagination")
+                        .WithOrigins("https://my-event-planning.herokuapp.com", "http://localhost:3001", "http://localhost:3000");
                 });
             });
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

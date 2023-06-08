@@ -12,10 +12,10 @@ public class User : IdentityUser
     public string Phone { get; set; }
     public string Address { get; set; }
     public string Birthday { get; set; }
-
     public ICollection<EventAttendee> Events { get; set; }
     public ICollection<Photo> Photos { get; set; }
     public ICollection<UserFollowing> Followings { get; set; }
     public ICollection<UserFollowing> Followers { get; set; }
+    public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
 }

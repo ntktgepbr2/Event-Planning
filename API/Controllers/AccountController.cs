@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-[AllowAnonymous]
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
@@ -30,6 +29,7 @@ public class AccountController : ControllerBase
         _emailSender = emailSender;
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
@@ -40,14 +40,15 @@ public class AccountController : ControllerBase
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-        if (result.Succeeded)
-        {
-            return CreateUserDto(user);
-        }
+        if (!result.Succeeded) return Unauthorized("Invalid password");
 
-        return Unauthorized("Invalid password");
+        await SetRefreshToken(user);
+
+        return CreateUserDto(user);
+
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
@@ -76,6 +77,7 @@ public class AccountController : ControllerBase
         if (!result.Succeeded) return BadRequest("Problem registering user");
 
         await SendEmailAsync(user);
+        await SetRefreshToken(user);
 
         return Ok("Registration success - please verify email!");
     }
@@ -110,6 +112,19 @@ public class AccountController : ControllerBase
 
     }
 
+    private async Task SendEmailAsync(User user)
+    {
+        var origin = Request.Headers["origin"];
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+        var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
+        var message =
+            $"<p>Please follow link to verify your email:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
+
+        await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
+    }
+
     [Authorize]
     [HttpGet()]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
@@ -120,6 +135,28 @@ public class AccountController : ControllerBase
 
         return CreateUserDto(user);
     }
+
+    [Authorize]
+    [HttpPost("refreshToken")]
+    public async Task<ActionResult<UserDto>> RefreshToken()
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+        var user = await _userManager.Users
+            .Include(u => u.RefreshTokens)
+            .Include(u => u.Photos)
+            .FirstOrDefaultAsync(x => x.UserName == User.FindFirstValue(ClaimTypes.Name));
+
+        if(user == null) return Unauthorized();
+
+        var oldToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
+
+        if (oldToken != null && !oldToken.IsActive) return Unauthorized();
+
+        return CreateUserDto(user);
+
+    }
+
+
 
 
     private UserDto CreateUserDto(User user)
@@ -142,16 +179,20 @@ public class AccountController : ControllerBase
     }
 
 
-    private async Task SendEmailAsync(User user)
+    private async Task SetRefreshToken(User user)
     {
-        var origin = Request.Headers["origin"];
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+        var refreshToken = _tokenService.CreateRefreshToken();
 
-        var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
-        var message =
-            $"<p>Please follow link to verify your email:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
+        user.RefreshTokens.Add(refreshToken);
 
-        await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
+        await _userManager.UpdateAsync(user);
+
+        var cookieOptions = new CookieOptions 
+        {
+            HttpOnly = true,
+            Expires = DateTime.UtcNow.AddDays(7),
+        };
+
+        Response.Cookies.Append("RefreshToken", refreshToken.Token, cookieOptions);
     }
 }

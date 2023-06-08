@@ -15,7 +15,7 @@ export default observer(function LoginForm() {
       onSubmit={(values, { setErrors }) =>
         userStore
           .login(values)
-          .then(() => history.push("/updateProfile"))
+          .then(() => history.push("/events"))
           .catch((error) => setErrors({ error: error.response.data }))
       }
     >

@@ -6,6 +6,7 @@ import { history } from "../..";
 
 export default class UserStore {
   user: User | null = null;
+  refreshTokenTimeout: any;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,6 +20,7 @@ export default class UserStore {
     try {
       const user = await agent.account.login(creds);
       store.commonStore.setToken(user.token);
+      this.startRefreshTokenTimer(user);
       runInAction(() => (this.user = user));
       store.modalStore.closeModal();
     } catch (error) {
@@ -36,9 +38,11 @@ export default class UserStore {
   getUser = async () => {
     try {
       const user = await agent.account.current();
+      store.commonStore.setToken(user.token);
       runInAction(() => {
         this.user = user;
       });
+      this.startRefreshTokenTimer(user);
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +51,7 @@ export default class UserStore {
     try {
       await agent.account.register(creds);
       history.push(`/account/registerSuccess?email=${creds.email}`);
+      store.modalStore.closeModal();
     } catch (error) {
       throw error;
     }
@@ -55,4 +60,30 @@ export default class UserStore {
   setImage = (image: string) => {
     if (this.user) this.user.image = image;
   };
+
+  refreshToken = async () => {
+    this.stopRefreshTokenTimer();
+    try {
+      const user = await agent.account.refreshToken();
+      runInAction(() => {
+        this.user = user;
+      });
+      store.commonStore.setToken(user.token);
+      this.startRefreshTokenTimer(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  private startRefreshTokenTimer(user: User) {
+    const jwt = JSON.parse(atob(user.token.split(".")[1]));
+    const expires = new Date(jwt.exp * 1000);
+    const timeOut = expires.getTime() - Date.now() - 60 * 1000;
+
+    this.refreshTokenTimeout = setTimeout(this.refreshToken, timeOut);
+  }
+
+  private stopRefreshTokenTimer() {
+    clearTimeout(this.refreshTokenTimeout);
+  }
 }

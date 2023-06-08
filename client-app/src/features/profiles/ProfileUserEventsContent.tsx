@@ -16,13 +16,11 @@ export default observer(function ProfileUserEventsContent() {
     { menuItem: "Past Events", render: () => <ProfileUserEvents /> },
     { menuItem: "Hosting", render: () => <ProfileUserEvents /> },
   ];
-
   useEffect(() => {
     if (userEvents.length === 0) {
       loadUserEvents("future");
     }
-  }, [userEvents, loadUserEvents]);
-
+  }, []);
   return (
     <Tab.Pane loading={loadingUserEvents}>
       <Grid>
