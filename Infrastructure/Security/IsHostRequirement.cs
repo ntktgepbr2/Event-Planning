@@ -27,12 +27,12 @@ public class IsHostRequirementHandler : AuthorizationHandler<IsHostRequirement>
 
         if (userId == null) return Task.CompletedTask;
 
-        var EventId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
+        var eventId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
             .SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
         var attendee =  _dbContext.EventAttendees
             .AsNoTracking()
-            .FirstOrDefault(x => x.User.Id == userId && x.EventId == EventId);
+            .FirstOrDefault(x => x.User.Id == userId && x.EventId == eventId);
 
         if(attendee == null) return Task.CompletedTask;
 

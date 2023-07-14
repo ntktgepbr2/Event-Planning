@@ -45,7 +45,6 @@ public class AccountController : ControllerBase
         await SetRefreshToken(user);
 
         return CreateUserDto(user);
-
     }
 
     [AllowAnonymous]
@@ -75,13 +74,14 @@ public class AccountController : ControllerBase
         var result = await _userManager.CreateAsync(user, registerDto.Password);
 
         if (!result.Succeeded) return BadRequest("Problem registering user");
-
-        await SendEmailAsync(user);
         await SetRefreshToken(user);
+        await SendEmailAsync(user);
+
 
         return Ok("Registration success - please verify email!");
     }
 
+    [AllowAnonymous]
     [HttpPost("verifyEmail")]
     public async Task<IActionResult> VerifyEmail(string token, string email)
     {
@@ -96,7 +96,6 @@ public class AccountController : ControllerBase
         if (!result.Succeeded) return BadRequest("Could not verify email");
 
         return Ok("Email confirmed - you can now login");
-
     }
 
     [HttpGet("resendLink")]
@@ -109,7 +108,6 @@ public class AccountController : ControllerBase
         await SendEmailAsync(user);
 
         return Ok("Verification link resent");
-
     }
 
     private async Task SendEmailAsync(User user)
@@ -153,11 +151,7 @@ public class AccountController : ControllerBase
         if (oldToken != null && !oldToken.IsActive) return Unauthorized();
 
         return CreateUserDto(user);
-
     }
-
-
-
 
     private UserDto CreateUserDto(User user)
     {
@@ -177,7 +171,6 @@ public class AccountController : ControllerBase
 
         return user;
     }
-
 
     private async Task SetRefreshToken(User user)
     {
